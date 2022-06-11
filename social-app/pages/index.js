@@ -1,8 +1,7 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
-import { signIn } from "next-auth/react"
-
+import Head from "next/head";
+import Image from "next/image";
+import styles from "../styles/Home.module.css";
+import { signIn } from "next-auth/react";
 
 export default function Home() {
   return (
@@ -19,5 +18,5 @@ export default function Home() {
         </h1>
       </main>
     </div>
-  )
+  );
 }
