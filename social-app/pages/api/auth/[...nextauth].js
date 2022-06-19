@@ -5,7 +5,28 @@ import CredentialsProvider from "next-auth/providers/credentials";
 export default NextAuth({
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      id: "username-login",
+      name: "Username",
+      credentials: {
+        username: {
+          label: "Username",
+          type: "username",
+          placeholder: "Bret",
+        },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        const user = await Axios.get(
+          `https://jsonplaceholder.typicode.com/users?username=${credentials.username}&address.zipcode=${credentials.password}`
+        ).then((res) => {
+          return res.data[0];
+        });
+        return user ? user : null;
+      },
+    }),
+    CredentialsProvider({
+      id: "email-login",
+      name: "Email",
       credentials: {
         email: {
           label: "Email",
@@ -23,6 +44,7 @@ export default NextAuth({
         return user ? user : null;
       },
     }),
+    
   ],
   callbacks: {
     session: async ({ session, token }) => {
@@ -41,4 +63,9 @@ export default NextAuth({
   session: {
     strategy: 'jwt',
   },
+  theme: {
+    colorScheme: "light", // "auto" | "dark" | "light"
+    brandColor: "#0284c7", // Hex color code
+    logo: "/resources/logobig.svg" // Absolute URL to image
+  }
 });
