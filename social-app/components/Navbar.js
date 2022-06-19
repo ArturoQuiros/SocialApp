@@ -16,11 +16,7 @@ const Navbar = () => {
         Sign Out
       </button>
     );
-    hello = (
-      <div className="hello">
-        Welcome {session.user.name} 
-      </div>
-    );
+    hello = <div className="hello">Welcome {session.user.name}</div>;
   } else {
     button = (
       <button
@@ -30,18 +26,14 @@ const Navbar = () => {
         Sign In
       </button>
     );
-    hello = (
-      <div className="hello">
-        
-      </div>
-    );
+    hello = <div className="hello"></div>;
   }
 
   return (
     <>
-      <nav className="bg-white border-gray-200 px-4 sm:px-4 py-2.5 rounded dark:bg-gray-800 mb-4	">
+      <nav className="bg-white border-gray-900 px-4 my-4 sm:px-4 py-2.5 rounded dark:bg-gray-800 mb-4	">
         <div className="container flex flex-wrap justify-between items-center mx-auto">
-          <img src="/resources/logo.svg" className="mr-3 h-6 sm:h-9" />
+          <img src="/resources/logo.svg" className="mr-3 h-8 sm:h-9" />
 
           <button
             data-collapse-toggle="mobile-menu"
@@ -78,7 +70,6 @@ const Navbar = () => {
           </button>
           <div className="hidden w-full md:block md:w-auto" id="mobile-menu">
             <ul className="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
-              <li className="text-white">{hello}</li>
               <li>
                 <Link href="/">
                   <a
