@@ -71,3 +71,21 @@ body {
 .button:hover {
   background: orange;
 }
+
+@media only screen and (max-width: 1800px) {
+  #photo_container {
+    width: 25%;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  #photo_container {
+    width: 33.3%;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  #photo_container {
+    width: 50%;
+  }
+}
