@@ -1,4 +1,4 @@
-import { useSession } from "next-auth/react";
+import { useSession, getSession } from "next-auth/react";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
@@ -106,8 +106,27 @@ export default function Album(props) {
           </div>
         </section>
       ) : (
-        <p>{(cont = 0)}Loading...</p>
+        <p>L{(cont = 0)}ADING...</p>
       )}
     </div>
   );
 }
+
+/*
+export async function getServerSideProps(context) {
+  const session = await getSession(context)
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/api/auth/signin',
+        permanent: false,
+      },
+    }
+  }
+
+  return {
+    props: { session }
+  }
+}
+*/
