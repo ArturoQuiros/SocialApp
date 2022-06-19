@@ -42,7 +42,7 @@ export default function Admin() {
 
       {albums[0] ? (
         <div class="flex flex-col items-center">
-          <h1 className="px-6 py-2.5 text-5xl text-center font-bold dark:text-white">
+          <h1 className="px-6 py-2.5 text-5xl text-center font-bold text-slate-900">
             Albums
           </h1>
           <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">

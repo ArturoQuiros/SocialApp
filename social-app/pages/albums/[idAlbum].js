@@ -71,13 +71,13 @@ export default function Album(props) {
 
       {photos[0] ? (
         <section class="overflow-hidden text-gray-700 ">
-          <h1 className="px-6 py-2.5 text-5xl text-center font-bold dark:text-white">
+          <h1 className="px-6 py-2.5 text-5xl text-center font-bold text-slate-900">
             {AlbumTitle}
           </h1>
           <div class="container px-5 py-2 mx-auto lg:pt-12 lg:px-32">
             <div class="flex flex-wrap -m-1 md:-m-2 ">
               {photos.map((photo) => (
-                <div class="flex flex-wrap w-1/4">
+                <div id="photo_container" class="flex flex-wrap w-1/5">
                   <div class="w-full p-2 md:p-2">
                     <p class="px-6 py-2.5 bg-blue-600 text-white font-medium text-x leading-tight ">
                       {photo.title}
