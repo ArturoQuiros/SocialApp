@@ -5,6 +5,17 @@ const SearchBar = (props) => {
   const [value, setValue] = useState("");
 
   const albums = async () => {
+    axios.get(`https://jsonplaceholder.typicode.com/albums?userId=${props.user}`).then((res) => {
+      //ASYNC
+      const data = res.data;
+      const search = data.filter((album) => album.title.includes(value));
+      props.data(search);
+    });
+
+  };
+
+  /*
+  const albums = async () => {
     let searchUrl = "";
     if (value == "") {
       searchUrl = `https://jsonplaceholder.typicode.com/albums?userId=${props.user}`;
@@ -17,7 +28,18 @@ const SearchBar = (props) => {
       props.data(data);
     });
   };
+  */
 
+  const photos = async () => {
+    axios.get(`https://jsonplaceholder.typicode.com/photos?albumId=${props.album}`).then((res) => {
+      //ASYNC
+      const data = res.data;
+      const search = data.filter((photo) => photo.title.includes(value));
+      props.data(search);
+    });
+  };
+
+  /*
   const photos = async () => {
     let searchUrl = "";
     if (value == "") {
@@ -31,6 +53,7 @@ const SearchBar = (props) => {
       props.data(data);
     });
   };
+  */
 
   const search = (e) => {
     e.preventDefault();

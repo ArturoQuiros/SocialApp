@@ -1,12 +1,14 @@
-import { useSession } from "next-auth/react";
+import { useSession, getSession } from "next-auth/react";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
 import SearchBar from "../components/SearchBar";
+import { useRouter } from "next/router";
 
 let cont = 0;
 
 export default function Admin() {
+  const router = useRouter();
   const [albums, setAlbums] = useState({});
 
   const { data: session } = useSession();
@@ -38,7 +40,7 @@ export default function Admin() {
 
   return (
     <div className="App">
-      <SearchBar data={setAlbums} id={1} user={session.user.id} />
+      <SearchBar d={albums} data={setAlbums} id={1} user={session.user.id} />
 
       {albums[0] ? (
         <div class="flex flex-col items-center">
@@ -101,8 +103,27 @@ export default function Admin() {
           </div>
         </div>
       ) : (
-        <p>{(cont = 0)}Loading...</p>
+        <p>L{(cont = 0)}ADING...</p>
       )}
     </div>
   );
 }
+
+/*
+export async function getServerSideProps(context) {
+  const session = await getSession(context)
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/api/auth/signin',
+        permanent: false,
+      },
+    }
+  }
+
+  return {
+    props: { session }
+  }
+}
+*/
