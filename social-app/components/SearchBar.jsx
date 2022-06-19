@@ -1,50 +1,49 @@
 import axios from "axios";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const SearchBar = (props) => {
+  const [value, setValue] = useState("");
 
-const [value, setValue] = useState('');
-
-const albums = async () => {
-  let searchUrl = ""
-  if (value == ""){
-    searchUrl = `https://jsonplaceholder.typicode.com/albums?userId=${props.user}`;
-  }else{
-    searchUrl = `https://jsonplaceholder.typicode.com/albums?userId=${props.user}&title=${value}`;
-  }
-  axios.get(searchUrl)
-  .then(res => { //ASYNC
-    const data = res.data;
-    props.data(data);
-  });
-};
-
-const photos = async () => {
-  let searchUrl = ""
-  if (value == ""){
-    searchUrl = `https://jsonplaceholder.typicode.com/photos?albumId=${props.album}`;
-  }else{
-    searchUrl = `https://jsonplaceholder.typicode.com/photos?albumId=${props.album}&title=${value}`;
-  }
-  axios.get(searchUrl)
-  .then(res => { //ASYNC
-    const data = res.data;
-    props.data(data);
-  });
-};
-
-const search = (e) => {
-  e.preventDefault();
-    if(props.id == 1){
-        albums();
-    } else if (props.id == 2) {
-        photos();
+  const albums = async () => {
+    let searchUrl = "";
+    if (value == "") {
+      searchUrl = `https://jsonplaceholder.typicode.com/albums?userId=${props.user}`;
+    } else {
+      searchUrl = `https://jsonplaceholder.typicode.com/albums?userId=${props.user}&title=${value}`;
     }
-}
-  
+    axios.get(searchUrl).then((res) => {
+      //ASYNC
+      const data = res.data;
+      props.data(data);
+    });
+  };
+
+  const photos = async () => {
+    let searchUrl = "";
+    if (value == "") {
+      searchUrl = `https://jsonplaceholder.typicode.com/photos?albumId=${props.album}`;
+    } else {
+      searchUrl = `https://jsonplaceholder.typicode.com/photos?albumId=${props.album}&title=${value}`;
+    }
+    axios.get(searchUrl).then((res) => {
+      //ASYNC
+      const data = res.data;
+      props.data(data);
+    });
+  };
+
+  const search = (e) => {
+    e.preventDefault();
+    if (props.id == 1) {
+      albums();
+    } else if (props.id == 2) {
+      photos();
+    }
+  };
+
   return (
     <>
-      <form class="flex items-center">
+      <form class="flex items-center my-8">
         <label for="simple-search" class="sr-only">
           Search by Title
         </label>
@@ -69,7 +68,9 @@ const search = (e) => {
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Search by Title"
             value={value}
-            onChange={e => { setValue(e.currentTarget.value); }}
+            onChange={(e) => {
+              setValue(e.currentTarget.value);
+            }}
             required
           />
         </div>
