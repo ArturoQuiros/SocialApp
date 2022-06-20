@@ -84,7 +84,7 @@ export default function Admin() {
                         </td>
                         <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                           <Link
-                            href={`/albums/${album.id}?&AlbumTitle=${album.title}`}
+                            href={`/albums/${album.id}?AlbumTitle=${album.title}`}
                           >
                             <button
                               type="button"

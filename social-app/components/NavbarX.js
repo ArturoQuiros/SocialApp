@@ -12,7 +12,7 @@ const NavbarX = () => {
   let home = true;
   let albums = false;
   
-  if (router.pathname == "/albums"){
+  if (router.pathname.startsWith("/albums")){
     albums=true;
     home=false;
   }

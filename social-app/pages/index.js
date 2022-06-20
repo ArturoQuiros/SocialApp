@@ -1,4 +1,3 @@
-import Gallery from "../components/Gallery";
 import SearchBar from "../components/SearchBar";
 import styles from "../styles/Home.module.css";
 import { useSession, getSession, signIn, signOut } from "next-auth/react";
