@@ -72,20 +72,59 @@ body {
   background: orange;
 }
 
+#photo_container {
+  height: 40vh;
+}
+#photo_title {
+  height: 25%;
+}
+
 @media only screen and (max-width: 1800px) {
   #photo_container {
     width: 25%;
+    height: 45vh;
+  }
+  #photo_title {
+    height: 23%;
+  }
+}
+
+@media only screen and (max-width: 1500px) {
+  #photo_container {
+    width: 25%;
+    height: 40vh;
+  }
+  #photo_title {
+    height: 25%;
   }
 }
 
 @media only screen and (max-width: 1200px) {
   #photo_container {
     width: 33.3%;
+    height: 42vh;
+  }
+  #photo_title {
+    height: 31%;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  #photo_container {
+    width: 33.3%;
+    height: 40vh;
+  }
+  #photo_title {
+    height: 31%;
   }
 }
 
 @media only screen and (max-width: 600px) {
   #photo_container {
     width: 50%;
+    height: 40vh;
+  }
+  #photo_title {
+    height: 34%;
   }
 }
