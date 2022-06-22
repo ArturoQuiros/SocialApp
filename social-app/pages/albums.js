@@ -39,22 +39,25 @@ export default function Admin() {
     return "Not authenticated...";
   }
 
-  if (!albums[0]){
+  if (!albums[0]) {
     cont = 0;
   }
 
   return (
     <div className="App">
-      <SearchBar d={albums} data={setAlbums} id={1} user={session.user.id} setNoResults={setNoResults}
+      <SearchBar
+        d={albums}
+        data={setAlbums}
+        id={1}
+        user={session.user.id}
+        setNoResults={setNoResults}
       />
 
-      { showNoResults ? (
+      {showNoResults ? (
         <p class="px-6 py-2.5 bg-blue-600 text-white font-medium text-x leading-tight ">
-        No results
-      </p>
-      ) : (
-        null
-      )}
+          No results
+        </p>
+      ) : null}
 
       {albums[0] ? (
         <div class="flex flex-col items-center">

@@ -42,15 +42,13 @@ export default function Album(props) {
     }
   });
 
- 
-
   const loadMore = () => {
-    if (photos[0]){
-      if ((max+20) >= photos.length){
+    if (photos[0]) {
+      if (max + 20 >= photos.length) {
         setShowMore(false);
       }
     }
-    setMax(max+20);
+    setMax(max + 20);
   };
 
   //Modal
@@ -73,7 +71,7 @@ export default function Album(props) {
     return "Not authenticated...";
   }
 
-  if (!photos[0]){
+  if (!photos[0]) {
     cont = 0;
   }
 
@@ -87,14 +85,11 @@ export default function Album(props) {
         setNoResults={setNoResults}
       />
 
-      { showNoResults ? (
+      {showNoResults ? (
         <p class="px-6 py-2.5 bg-blue-600 text-white font-medium text-x leading-tight ">
-        No results
-      </p>
-      ) : (
-        null
-      )}
-      
+          No results
+        </p>
+      ) : null}
 
       {modal}
 
@@ -105,10 +100,13 @@ export default function Album(props) {
           </h1>
           <div class="container px-5 py-2 mx-auto lg:pt-12 lg:px-32">
             <div class="flex flex-wrap -m-1 md:-m-2">
-              {photos.slice(min,max).map((photo) => (
+              {photos.slice(min, max).map((photo) => (
                 <div id="photo_container" class="flex flex-wrap w-1/5">
                   <div class="w-full p-2 md:p-2">
-                    <p id="photo_title" class="px-6 py-2.5 bg-blue-600 text-white font-medium text-x leading-tight">
+                    <p
+                      id="photo_title"
+                      class="px-6 py-2.5 bg-blue-600 text-white font-medium text-x leading-tight"
+                    >
                       {photo.title}
                     </p>
                     <div>
@@ -128,16 +126,12 @@ export default function Album(props) {
                     >
                       View Photo
                     </button>
-                    
                   </div>
                 </div>
               ))}
-
-                
-
             </div>
-            
-            { showMore ? (
+
+            {showMore ? (
               <button
                 type="button"
                 onClick={() => loadMore()}
@@ -145,16 +139,9 @@ export default function Album(props) {
               >
                 Load more
               </button>
-            ) : (
-              null
-            )}
-
-            
-
+            ) : null}
           </div>
-
         </section>
-        
       ) : (
         <p>Loading...</p>
       )}
