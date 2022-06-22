@@ -9,7 +9,17 @@ const SearchBar = (props) => {
       //ASYNC
       const data = res.data;
       const search = data.filter((album) => album.title.includes(value));
-      props.data(search);
+      if(search[0]){
+        props.data(search);
+        props.setNoResults(false)
+      }else{
+        props.setNoResults(true)
+      }
+
+      if (value == "") {
+        props.data(data);
+      }
+      
     });
 
   };
@@ -35,7 +45,16 @@ const SearchBar = (props) => {
       //ASYNC
       const data = res.data;
       const search = data.filter((photo) => photo.title.includes(value));
-      props.data(search);
+      if(search[0]){
+        props.data(search);
+        props.setNoResults(false)
+      }else{
+        props.setNoResults(true)
+      }
+
+      if (value == "") {
+        props.data(data);
+      }
     });
   };
 

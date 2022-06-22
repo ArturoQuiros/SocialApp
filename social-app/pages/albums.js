@@ -10,6 +10,7 @@ let cont = 0;
 export default function Admin() {
   const router = useRouter();
   const [albums, setAlbums] = useState({});
+  const [showNoResults, setNoResults] = useState(false);
 
   const { data: session } = useSession();
   const { status } = useSession({
@@ -38,9 +39,22 @@ export default function Admin() {
     return "Not authenticated...";
   }
 
+  if (!albums[0]){
+    cont = 0;
+  }
+
   return (
     <div className="App">
-      <SearchBar d={albums} data={setAlbums} id={1} user={session.user.id} />
+      <SearchBar d={albums} data={setAlbums} id={1} user={session.user.id} setNoResults={setNoResults}
+      />
+
+      { showNoResults ? (
+        <p class="px-6 py-2.5 bg-blue-600 text-white font-medium text-x leading-tight ">
+        No results
+      </p>
+      ) : (
+        null
+      )}
 
       {albums[0] ? (
         <div class="flex flex-col items-center">
@@ -103,7 +117,7 @@ export default function Admin() {
           </div>
         </div>
       ) : (
-        <p>L{(cont = 0)}ADING...</p>
+        <p>Loading...</p>
       )}
     </div>
   );

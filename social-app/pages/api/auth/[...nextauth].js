@@ -5,42 +5,29 @@ import CredentialsProvider from "next-auth/providers/credentials";
 export default NextAuth({
   providers: [
     CredentialsProvider({
-      id: "username-login",
-      name: "Username",
+      id: "login",
+      name: "Username or Email",
       credentials: {
         username: {
-          label: "Username",
+          label: "Username or Email",
           type: "username",
-          placeholder: "Bret",
+          placeholder: "Username / email@email.com",
         },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const user = await Axios.get(
+        let user = await Axios.get(
           `https://jsonplaceholder.typicode.com/users?username=${credentials.username}&address.zipcode=${credentials.password}`
         ).then((res) => {
           return res.data[0];
         });
-        return user ? user : null;
-      },
-    }),
-    CredentialsProvider({
-      id: "email-login",
-      name: "Email",
-      credentials: {
-        email: {
-          label: "Email",
-          type: "email",
-          placeholder: "your-email@example.com",
-        },
-        password: { label: "Password", type: "password" },
-      },
-      async authorize(credentials) {
-        const user = await Axios.get(
-          `https://jsonplaceholder.typicode.com/users?email=${credentials.email}&address.zipcode=${credentials.password}`
-        ).then((res) => {
-          return res.data[0];
-        });
+        if(!user){
+          user = await Axios.get(
+            `https://jsonplaceholder.typicode.com/users?email=${credentials.username}&address.zipcode=${credentials.password}`
+          ).then((res) => {
+            return res.data[0];
+          });
+        }
         return user ? user : null;
       },
     }),
