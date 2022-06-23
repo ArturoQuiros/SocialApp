@@ -1,0 +1,22 @@
+[{
+  "_id": {
+    "$oid": "62b4ec5f32cd5714c882c239"
+  },
+  "userId": "62b4e4a8c291c3f24f0365e2",
+  "title": "Album de Kim",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62b4ec7d32cd5714c882c23b"
+  },
+  "userId": "62b4ebfa32cd5714c882c233",
+  "title": "Album de Jimmy",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62b4ec8e32cd5714c882c23d"
+  },
+  "userId": "62b4ec1d32cd5714c882c235",
+  "title": "Album de Mike",
+  "__v": 0
+}]
