@@ -101,16 +101,14 @@ export default function Album(props) {
           <div class="container px-5 py-2 mx-auto lg:pt-12 lg:px-32">
             <div class="flex flex-wrap -m-1 md:-m-2">
               {photos.slice(min, max).map((photo) => (
-                <div id="photo_container" class="flex flex-wrap w-1/5">
+                <div id="photo_container" class="flex flex-wrap w-1/5 items-stretch">
 
-                <div class="w-full m-2 md:m-2 bg-blue-600">
-                <button
-                    type="button"
-                    onClick={() => openModal(photo.title, photo.url)}
-                    class="w-full h-fit m-0 inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-                  >
-                    View Photo
-                  </button>
+                <div class="w-full m-2 md:m-2 bg-blue-600 grid grid-cols-1 content-end">
+
+                 <p id="photo_title" class="px-6 py-2.5 bg-blue-600 text-white font-medium text-x leading-tight w-full h-auto m-0">
+                    {photo.title}
+                  </p>
+                  
                   <div class="w-full h-fit m-0">
                     <img
                       class="block object-cover object-center w-full h-full "
@@ -120,9 +118,13 @@ export default function Album(props) {
                     ></img>
                   </div>
               
-                  <p id="photo_title" class="px-6 py-2.5 bg-blue-600 text-white font-medium text-x leading-tight w-full h-auto m-0">
-                    {photo.title}
-                  </p>
+                  <button
+                    type="button"
+                    onClick={() => openModal(photo.title, photo.url)}
+                    class="w-full h-fit m-0 inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+                  >
+                    View Photo
+                  </button>
                   
                 </div>
               </div>
