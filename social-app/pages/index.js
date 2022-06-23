@@ -12,7 +12,6 @@ export default function Home() {
 
   useEffect(() => {
     if (!session) {
-
     }
   }, []);
 
@@ -31,28 +30,22 @@ export default function Home() {
     return "Not authenticated...";
   }
 
-  
-
-  return (
-    <div className="App">
-        {hello}
-    </div>
-  );
+  return <div className="App">{hello}</div>;
 }
 
 export async function getServerSideProps(context) {
-  const session = await getSession(context)
+  const session = await getSession(context);
 
   if (!session) {
     return {
       redirect: {
-        destination: '/api/auth/signin',
+        destination: "/api/auth/signin",
         permanent: false,
       },
-    }
+    };
   }
 
   return {
-    props: { session }
-  }
+    props: { session },
+  };
 }

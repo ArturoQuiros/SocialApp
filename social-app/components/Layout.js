@@ -1,12 +1,12 @@
 import NavbarX from "./NavbarX";
-import Footer from "./Footer";
+import FooterX from "./FooterX";
 
 const Layout = ({ children }) => {
   return (
     <div className="content">
       <NavbarX />
       {children}
-      <Footer />
+      <FooterX />
     </div>
   );
 };

@@ -5,23 +5,23 @@ const SearchBar = (props) => {
   const [value, setValue] = useState("");
 
   const albums = async () => {
-    axios.get(`https://jsonplaceholder.typicode.com/albums?userId=${props.user}`).then((res) => {
-      //ASYNC
-      const data = res.data;
-      const search = data.filter((album) => album.title.includes(value));
-      if(search[0]){
-        props.data(search);
-        props.setNoResults(false)
-      }else{
-        props.setNoResults(true)
-      }
+    axios
+      .get(`https://jsonplaceholder.typicode.com/albums?userId=${props.user}`)
+      .then((res) => {
+        //ASYNC
+        const data = res.data;
+        const search = data.filter((album) => album.title.includes(value));
+        if (search[0]) {
+          props.data(search);
+          props.setNoResults(false);
+        } else {
+          props.setNoResults(true);
+        }
 
-      if (value == "") {
-        props.data(data);
-      }
-      
-    });
-
+        if (value == "") {
+          props.data(data);
+        }
+      });
   };
 
   /*
@@ -41,21 +41,23 @@ const SearchBar = (props) => {
   */
 
   const photos = async () => {
-    axios.get(`https://jsonplaceholder.typicode.com/photos?albumId=${props.album}`).then((res) => {
-      //ASYNC
-      const data = res.data;
-      const search = data.filter((photo) => photo.title.includes(value));
-      if(search[0]){
-        props.data(search);
-        props.setNoResults(false)
-      }else{
-        props.setNoResults(true)
-      }
+    axios
+      .get(`https://jsonplaceholder.typicode.com/photos?albumId=${props.album}`)
+      .then((res) => {
+        //ASYNC
+        const data = res.data;
+        const search = data.filter((photo) => photo.title.includes(value));
+        if (search[0]) {
+          props.data(search);
+          props.setNoResults(false);
+        } else {
+          props.setNoResults(true);
+        }
 
-      if (value == "") {
-        props.data(data);
-      }
-    });
+        if (value == "") {
+          props.data(data);
+        }
+      });
   };
 
   /*
