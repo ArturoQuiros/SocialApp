@@ -1,0 +1,28 @@
+[{
+  "_id": {
+    "$oid": "62b4f0abeee8c2f0c56b2cbc"
+  },
+  "albumId": "62b4ec5f32cd5714c882c239",
+  "title": "Foto de Kim",
+  "url": "https://via.placeholder.com/600/92c952",
+  "thumbnailUrl": "https://via.placeholder.com/150/92c952",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62b4f0bceee8c2f0c56b2cbe"
+  },
+  "albumId": "62b4ec7d32cd5714c882c23b",
+  "title": "Foto de Jimmy",
+  "url": "https://via.placeholder.com/600/92c952",
+  "thumbnailUrl": "https://via.placeholder.com/150/92c952",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62b4f0c5eee8c2f0c56b2cc0"
+  },
+  "albumId": "62b4ec8e32cd5714c882c23d",
+  "title": "Foto de Mike",
+  "url": "https://via.placeholder.com/600/92c952",
+  "thumbnailUrl": "https://via.placeholder.com/150/92c952",
+  "__v": 0
+}]

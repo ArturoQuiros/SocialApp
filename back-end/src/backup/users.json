@@ -1,0 +1,76 @@
+[{
+  "_id": {
+    "$oid": "62b4e4a8c291c3f24f0365e2"
+  },
+  "name": "Kim Wexler",
+  "username": "Kimmy",
+  "email": "Sincere@april.biz",
+  "phone": "1-770-736-8031 x56442",
+  "website": "kim-wexler.org",
+  "address": {
+    "street": "Kulas Light",
+    "suite": "Apt. 556",
+    "city": "Gwenborough",
+    "zipcode": "92998-3874",
+    "geo": {
+      "lat": "-38.3159",
+      "lng": "81.1496"
+    }
+  },
+  "company": {
+    "name": "Romaguera-Crona",
+    "catchPhrase": "Multi-layered client-server neural-net",
+    "bs": "harness real-time e-markets"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62b4ebfa32cd5714c882c233"
+  },
+  "name": "Jimmy McGill",
+  "username": "Jimmy",
+  "email": "Sincere@april.biz",
+  "phone": "1-770-736-8031 x56442",
+  "website": "kim-wexler.org",
+  "address": {
+    "street": "Kulas Light",
+    "suite": "Apt. 556",
+    "city": "Gwenborough",
+    "zipcode": "92998-3874",
+    "geo": {
+      "lat": "-38.3159",
+      "lng": "81.1496"
+    }
+  },
+  "company": {
+    "name": "Romaguera-Crona",
+    "catchPhrase": "Multi-layered client-server neural-net",
+    "bs": "harness real-time e-markets"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62b4ec1d32cd5714c882c235"
+  },
+  "name": "Mike Ehrmantraut",
+  "username": "Mike",
+  "email": "Sincere@april.biz",
+  "phone": "1-770-736-8031 x56442",
+  "website": "kim-wexler.org",
+  "address": {
+    "street": "Kulas Light",
+    "suite": "Apt. 556",
+    "city": "Gwenborough",
+    "zipcode": "92998-3874",
+    "geo": {
+      "lat": "-38.3159",
+      "lng": "81.1496"
+    }
+  },
+  "company": {
+    "name": "Romaguera-Crona",
+    "catchPhrase": "Multi-layered client-server neural-net",
+    "bs": "harness real-time e-markets"
+  },
+  "__v": 0
+}]
