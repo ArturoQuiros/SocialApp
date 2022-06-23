@@ -102,32 +102,30 @@ export default function Album(props) {
             <div class="flex flex-wrap -m-1 md:-m-2">
               {photos.slice(min, max).map((photo) => (
                 <div id="photo_container" class="flex flex-wrap w-1/5">
-                  <div class="w-full p-2 md:p-2">
-                    <p
-                      id="photo_title"
-                      class="px-6 py-2.5 bg-blue-600 text-white font-medium text-x leading-tight"
-                    >
-                      {photo.title}
-                    </p>
-                    <div>
-                      <img
-                        class="block object-cover object-center w-full h-full "
-                        src={photo.thumbnailUrl + ".png"}
-                        width="100%"
-                        height="100%"
-                      ></img>
-                    </div>
 
-                    <p></p>
-                    <button
-                      type="button"
-                      onClick={() => openModal(photo.title, photo.url)}
-                      class="w-full inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-                    >
-                      View Photo
-                    </button>
+                <div class="w-full m-2 md:m-2 bg-blue-600">
+                <button
+                    type="button"
+                    onClick={() => openModal(photo.title, photo.url)}
+                    class="w-full h-fit m-0 inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+                  >
+                    View Photo
+                  </button>
+                  <div class="w-full h-fit m-0">
+                    <img
+                      class="block object-cover object-center w-full h-full "
+                      src={photo.thumbnailUrl + ".png"}
+                      width="100%"
+                      height="100%"
+                    ></img>
                   </div>
+              
+                  <p id="photo_title" class="px-6 py-2.5 bg-blue-600 text-white font-medium text-x leading-tight w-full h-auto m-0">
+                    {photo.title}
+                  </p>
+                  
                 </div>
+              </div>
               ))}
             </div>
 
