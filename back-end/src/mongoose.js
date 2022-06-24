@@ -36,6 +36,12 @@ const addUser = async (req, res) => {//add a user
     res.json(result);
 }
 
+const login = async (req, res) => {//login
+
+    const result = await User.find({ $or: [{username: req.body.email}, {email: req.body.email}], 'address.zipcode': req.body.password }).exec();
+    res.json(result);
+}
+
 const getUsers = async (req, res) => { //find all users
     const users = await User.find().exec();
     res.json(users);
@@ -80,6 +86,27 @@ const updateUser = async (req, res) => { //update a user by id
     res.json(result);
 }
 
+const updatePassword = async (req, res) => { //update a user password by id
+
+    const idParam = req.params.id;
+
+    const r = await User.findById(idParam).exec();
+
+    const result = await User.updateOne({ _id: idParam}, { $set: { 
+        address: {
+            street: r.address.street,
+            suite: r.address.suite,
+            city: r.address.city,
+            zipcode: req.body.zipcode, //Change only the "password" here
+            geo: {
+                lat: r.address.geo.lat,
+                lng: r.address.geo.lng,
+            },
+        },
+    } }).exec();
+    res.json(result);
+}
+
 const deleteUser = async (req, res) => { //delete a user by id
 
     const idParam = req.params.id;
@@ -96,7 +123,9 @@ const deleteUsers = async (req, res) => { //delete all users
 
 exports.addUser = addUser;
 exports.getUsers = getUsers;
+exports.login = login;
 exports.getUser = getUser;
 exports.updateUser = updateUser;
+exports.updatePassword = updatePassword;
 exports.deleteUser = deleteUser;
 exports.deleteUsers = deleteUsers;
