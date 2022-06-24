@@ -16,6 +16,14 @@ export default NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
+
+        //DESCOMENTAR ESTE POST Y COMENTAR LOS 2 GET cuando empiece a usar nuestro API
+        // let user = await Axios.post(
+        //   'http://localhost:3333/users/login', { email: credentials.username, password: credentials.password }
+        // ).then((res) => {
+        //   return res.data[0];
+        // });
+
         let user = await Axios.get(
           `https://jsonplaceholder.typicode.com/users?username=${credentials.username}&address.zipcode=${credentials.password}`
         ).then((res) => {
@@ -28,6 +36,8 @@ export default NextAuth({
             return res.data[0];
           });
         }
+
+        //console.log(user);
         return user ? user : null;
       },
     }),
@@ -36,13 +46,13 @@ export default NextAuth({
   callbacks: {
     session: async ({ session, token }) => {
       if (session?.user) {
-        session.user.id = token.uid;
+        session.user.id = token.uid; //CAMBIAR id POR _id cuando empiece a usar nuestro API
       }
       return session;
     },
     jwt: async ({ user, token }) => {
       if (user) {
-        token.uid = user.id;
+        token.uid = user.id; //CAMBIAR id POR _id cuando empiece a usar nuestro API
       }
       return token;
     },
