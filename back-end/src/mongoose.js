@@ -42,9 +42,18 @@ const login = async (req, res) => {//login
     res.json(result);
 }
 
-const getUsers = async (req, res) => { //find all users
-    const users = await User.find().exec();
-    res.json(users);
+const getUsers = async (req, res) => { //find all users or user by id
+
+    let idParam = req.query.id;
+
+    if(idParam){
+        const users = await User.findById(idParam).exec();
+        res.json(users);
+    }else{
+        const users = await User.find().exec();
+        res.json(users);
+    }
+
 }
 
 const getUser = async (req, res) => { //find a user by id
@@ -58,7 +67,19 @@ const getUser = async (req, res) => { //find a user by id
 const updateUser = async (req, res) => { //update a user by id
 
     const idParam = req.params.id;
+    await updateAUser(req,res,idParam);
+    
+}
 
+const updateUser2 = async (req, res) => { //update a user by id
+
+    const idParam = req.query.id;
+    await updateAUser(req,res,idParam);
+
+}
+
+const updateAUser = async (req, res, idParam) => {
+    
     const r = await User.findById(idParam).exec();
 
     const result = await User.updateOne({ _id: idParam}, { $set: { 
@@ -84,11 +105,24 @@ const updateUser = async (req, res) => { //update a user by id
         },
     } }).exec();
     res.json(result);
+
 }
 
 const updatePassword = async (req, res) => { //update a user password by id
 
     const idParam = req.params.id;
+    await updateAUserPassword(req,res,idParam);
+    
+}
+
+const updatePassword2 = async (req, res) => { //update a user password by id
+
+    const idParam = req.query.id;
+    await updateAUserPassword(req,res,idParam);
+    
+}
+
+const updateAUserPassword = async (req, res, idParam) => {
 
     const r = await User.findById(idParam).exec();
 
@@ -97,7 +131,7 @@ const updatePassword = async (req, res) => { //update a user password by id
             street: r.address.street,
             suite: r.address.suite,
             city: r.address.city,
-            zipcode: req.body.zipcode, //Change only the "password" here
+            zipcode: req.body.address.zipcode, //Change only the "password" here
             geo: {
                 lat: r.address.geo.lat,
                 lng: r.address.geo.lng,
@@ -105,6 +139,7 @@ const updatePassword = async (req, res) => { //update a user password by id
         },
     } }).exec();
     res.json(result);
+
 }
 
 const deleteUser = async (req, res) => { //delete a user by id
@@ -115,10 +150,18 @@ const deleteUser = async (req, res) => { //delete a user by id
     res.json(result);
 }
 
-const deleteUsers = async (req, res) => { //delete all users
+const deleteUsers = async (req, res) => { //delete all users or user by id
 
-    const result = await User.deleteMany({}).exec();
-    res.json(result);
+    let idParam = req.query.id;
+
+    if(idParam){
+        const result = await User.deleteOne({ _id: idParam }).exec();
+        res.json(result);
+    }else{
+        const result = await User.deleteMany({}).exec();
+        res.json(result);
+    }
+
 }
 
 exports.addUser = addUser;
@@ -126,6 +169,8 @@ exports.getUsers = getUsers;
 exports.login = login;
 exports.getUser = getUser;
 exports.updateUser = updateUser;
+exports.updateUser2 = updateUser2;
 exports.updatePassword = updatePassword;
+exports.updatePassword2 = updatePassword2;
 exports.deleteUser = deleteUser;
 exports.deleteUsers = deleteUsers;
