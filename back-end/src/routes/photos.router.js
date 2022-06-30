@@ -2,17 +2,17 @@ const express = require("express")
 
 const router = express.Router();
 
-const mongooseDB = require('../mongoosePhotos')
+const photosController = require('../controllers/photos.controller')
 
-router.get("/photos", mongooseDB.getPhotos);
-router.get("/photos/:id", mongooseDB.getPhoto);
+router.get("/", photosController.getPhotos);
+router.get("/:id", photosController.getPhoto);
 
-router.post("/photos", mongooseDB.addPhoto);
+router.post("/", photosController.addPhoto);
 
-router.put("/photos/:id", mongooseDB.updatePhoto);
-router.put("/photos", mongooseDB.updatePhoto2);
+router.put("/:id", photosController.updatePhoto);
+router.put("/", photosController.updatePhoto2);
 
-router.delete("/photos/:id", mongooseDB.deletePhoto);
-router.delete("/photos", mongooseDB.deletePhotos);
+router.delete("/:id", photosController.deletePhoto);
+router.delete("/", photosController.deletePhotos);
 
 module.exports = router;
