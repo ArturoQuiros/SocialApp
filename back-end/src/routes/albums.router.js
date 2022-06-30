@@ -2,17 +2,17 @@ const express = require("express")
 
 const router = express.Router();
 
-const mongooseDB = require('../mongooseAlbums')
+const albumsController = require('../controllers/albums.controller')
 
-router.get("/albums", mongooseDB.getAlbums);
-router.get("/albums/:id", mongooseDB.getAlbum);
+router.get("/", albumsController.getAlbums);
+router.get("/:id", albumsController.getAlbum);
 
-router.post("/albums", mongooseDB.addAlbum);
+router.post("/", albumsController.addAlbum);
 
-router.put("/albums/:id", mongooseDB.updateAlbum);
-router.put("/albums", mongooseDB.updateAlbum2);
+router.put("/:id", albumsController.updateAlbum);
+router.put("/", albumsController.updateAlbum2);
 
-router.delete("/albums/:id", mongooseDB.deleteAlbum);
-router.delete("/albums", mongooseDB.deleteAlbums);
+router.delete("/:id", albumsController.deleteAlbum);
+router.delete("/", albumsController.deleteAlbums);
 
 module.exports = router;

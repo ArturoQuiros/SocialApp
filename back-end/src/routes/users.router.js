@@ -2,20 +2,20 @@ const express = require("express")
 
 const router = express.Router();
 
-const mongooseDB = require('../mongoose')
+const usersController = require('../controllers/users.controller')
 
-router.get("/users", mongooseDB.getUsers);
-router.get("/users/:id", mongooseDB.getUser);
+router.get("/", usersController.getUsers);
+router.get("/:id", usersController.getUser);
 
-router.post("/users", mongooseDB.addUser);
-router.post("/users/login", mongooseDB.login);
+router.post("/signup", usersController.addUser);
+router.post("/login", usersController.login);
 
-router.put("/users/:id", mongooseDB.updateUser);
-router.put("/users", mongooseDB.updateUser2);
-router.put("/usersPassword/:id", mongooseDB.updatePassword);
-router.put("/usersPassword", mongooseDB.updatePassword2);
+router.put("/password/:id", usersController.updatePassword);
+router.put("/password/", usersController.updatePassword2);
+router.put("/:id", usersController.updateUser);
+router.put("/", usersController.updateUser2);
 
-router.delete("/users/:id", mongooseDB.deleteUser);
-router.delete("/users", mongooseDB.deleteUsers);
+router.delete("/:id", usersController.deleteUser);
+router.delete("/", usersController.deleteUsers);
 
 module.exports = router;
