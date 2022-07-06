@@ -6,6 +6,7 @@ const albumsController = require('../controllers/albums.controller')
 
 router.get("/", albumsController.getAlbums);
 router.get("/:id", albumsController.getAlbum);
+router.get("/search/:s", albumsController.getAlbumsByTitle);
 
 router.post("/", albumsController.addAlbum);
 
