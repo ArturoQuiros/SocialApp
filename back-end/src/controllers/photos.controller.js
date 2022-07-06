@@ -22,9 +22,10 @@ const addPhoto = async (req, res, next) => {//add a photo
     })
 }
 
-const getPhotos = async (req, res, next) => { //find all photos or photo by id
+const getPhotos = async (req, res, next) => { //find all photos or photo by id or photos by title (search case insensitive)
 
     const idParam = req.query.id;
+    const searchTitle = req.query.s;
 
     if(idParam){
         let photo;
@@ -39,6 +40,25 @@ const getPhotos = async (req, res, next) => { //find all photos or photo by id
             res.status(StatusCodes.OK).json({
                 message: ReasonPhrases.OK,
                 data: photo.toObject({getters: true}),
+            });
+        }else{
+            res.status(StatusCodes.NOT_FOUND).json({
+                message: ReasonPhrases.NOT_FOUND
+            });
+        }
+    }else if(searchTitle){
+        let photos;
+
+        try{
+            photos = await Photo.find({ title: { $regex: searchTitle, $options: "i" } }); //Case insensitive
+        }catch(err){
+            return next(new HttpError("Not found", 400))
+        }
+
+        if(photos[0]){
+            res.status(StatusCodes.OK).json({
+                message: ReasonPhrases.OK,
+                data: photos
             });
         }else{
             res.status(StatusCodes.NOT_FOUND).json({
@@ -75,6 +95,29 @@ const getPhoto = async (req, res, next) => { //find a photo by id
         res.status(StatusCodes.OK).json({
             message: ReasonPhrases.OK,
             data: photo.toObject({getters: true}),
+        });
+    }else{
+        res.status(StatusCodes.NOT_FOUND).json({
+            message: ReasonPhrases.NOT_FOUND
+        });
+    }
+}
+
+const getPhotosByTitle = async (req, res, next) => { //find photos by title (search case insensitive)
+
+    const searchTitle = req.params.s;
+    let photos;
+
+    try{
+        photos = await Photo.find({ title: { $regex: searchTitle, $options: "i" } }); //Case insensitive
+    }catch(err){
+        return next(new HttpError("Not found", 400))
+    }
+
+    if(photos[0]){
+        res.status(StatusCodes.OK).json({
+            message: ReasonPhrases.OK,
+            data: photos
         });
     }else{
         res.status(StatusCodes.NOT_FOUND).json({
@@ -188,6 +231,7 @@ const deletePhotos = async (req, res, next) => { //delete all photos or photo by
 
 exports.addPhoto = addPhoto;
 exports.getPhotos = getPhotos;
+exports.getPhotosByTitle = getPhotosByTitle;
 exports.getPhoto = getPhoto;
 exports.updatePhoto = updatePhoto;
 exports.updatePhoto2 = updatePhoto2;

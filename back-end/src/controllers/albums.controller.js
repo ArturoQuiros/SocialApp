@@ -20,9 +20,10 @@ const addAlbum = async (req, res, next) => {//add an album
     })
 }
 
-const getAlbums = async (req, res, next) => { //find all albums or album by id
+const getAlbums = async (req, res, next) => { //find all albums or album by id or albums by title (search case insensitive)
 
     const idParam = req.query.id;
+    const searchTitle = req.query.s;
 
     if(idParam){
         let album;
@@ -37,6 +38,25 @@ const getAlbums = async (req, res, next) => { //find all albums or album by id
             res.status(StatusCodes.OK).json({
                 message: ReasonPhrases.OK,
                 data: album.toObject({getters: true}),
+            });
+        }else{
+            res.status(StatusCodes.NOT_FOUND).json({
+                message: ReasonPhrases.NOT_FOUND
+            });
+        }
+    }else if(searchTitle){
+        let albums;
+
+        try{
+            albums = await Album.find({ title: { $regex: searchTitle, $options: "i" } }); //Case insensitive
+        }catch(err){
+            return next(new HttpError("Not found", 400))
+        }
+
+        if(albums[0]){
+            res.status(StatusCodes.OK).json({
+                message: ReasonPhrases.OK,
+                data: albums
             });
         }else{
             res.status(StatusCodes.NOT_FOUND).json({
@@ -73,6 +93,29 @@ const getAlbum = async (req, res, next) => { //find an album by id
         res.status(StatusCodes.OK).json({
             message: ReasonPhrases.OK,
             data: album.toObject({getters: true}),
+        });
+    }else{
+        res.status(StatusCodes.NOT_FOUND).json({
+            message: ReasonPhrases.NOT_FOUND
+        });
+    }
+}
+
+const getAlbumsByTitle = async (req, res, next) => { //find albums by title (search case insensitive)
+
+    const searchTitle = req.params.s;
+    let albums;
+
+    try{
+        albums = await Album.find({ title: { $regex: searchTitle, $options: "i" } }); //Case insensitive
+    }catch(err){
+        return next(new HttpError("Not found", 400))
+    }
+
+    if(albums[0]){
+        res.status(StatusCodes.OK).json({
+            message: ReasonPhrases.OK,
+            data: albums
         });
     }else{
         res.status(StatusCodes.NOT_FOUND).json({
@@ -189,6 +232,7 @@ const deleteAlbums = async (req, res, next) => { //delete all albums or album by
 
 exports.addAlbum = addAlbum;
 exports.getAlbums = getAlbums;
+exports.getAlbumsByTitle = getAlbumsByTitle;
 exports.getAlbum = getAlbum;
 exports.updateAlbum = updateAlbum;
 exports.updateAlbum2 = updateAlbum2;
