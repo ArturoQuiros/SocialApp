@@ -2,9 +2,9 @@
 
 1Proyecto Web 2 - NextJS
 
-Designed and developed by Arturo Quirós n Jose Alí Rivas
+Designed and developed by @arturoquiros and @josealirivasgomez
 
-Checkout our project  ⬇⬇⬇
+⬇⬇⬇ Checkout our project  ⬇⬇⬇
 
 https://social-app-utn.netlify.app/albums
 
