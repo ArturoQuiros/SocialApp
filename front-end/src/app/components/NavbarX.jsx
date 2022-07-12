@@ -1,6 +1,7 @@
 import { Navbar, Dropdown, Avatar } from "flowbite-react/lib/cjs/index.js";
 import { useAuthStore } from "../../hooks/useAuthStore";
 import { Link, NavLink, useNavigate } from 'react-router-dom';
+import logo from '../../favicon.svg' // relative path to image 
 
 export const NavbarX = () => {
 
@@ -40,7 +41,7 @@ export const NavbarX = () => {
       <Navbar fluid={true} rounded={true}>
         <Navbar.Brand>
           <img
-            src="/src/favicon.svg"
+            src={logo}
             className="mr-3 h-6 sm:h-9"
             alt="Social App Logo"
           />
