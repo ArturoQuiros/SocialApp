@@ -1,0 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+.content {
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+.overlay {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+
+
+
+/* Modal */
+.ReactModalPortal > div{
+  opacity: 0;
+}
+
+.ReactModalPortal .ReactModal__Overlay {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  transition: opacity .2s ease-in-out;
+  z-index: 999;
+}
+
+.modal-fondo {
+  background-color: rgba(0, 0, 0, 0.3);
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  position: fixed;
+}
+
+.ReactModalPortal .ReactModal__Overlay--after-open {
+  opacity: 1;
+}
+
+.ReactModalPortal .ReactModal__Overlay--before-close {
+  opacity: 0;
+}
+
+.modal {
+  background: white;
+  border-radius: 5px;
+  color: rgb(51, 51, 51);
+  display: inline;
+  max-height: 620px;
+  max-width: 500px;
+  outline: none;
+  padding: 10px;
+}
+
+
+
+
+
+@media only screen and (max-width: 1800px) {
+  #photo_container {
+    width: 25%;
+    /* height: 45vh; */
+  }
+  /* #photo_title {
+    height: 23%;
+  }*/
+} 
+
+@media only screen and (max-width: 1500px) {
+  #photo_container {
+    width: 25%;
+    /* height: 40vh; */
+  }
+  /* #photo_title {
+    height: 25%;
+  } */
+}
+
+@media only screen and (max-width: 1200px) {
+  #photo_container {
+    width: 33.3%;
+    /* height: 42vh; */
+  }
+  /* #photo_title {
+    height: 31%;
+  } */
+}
+
+@media only screen and (max-width: 900px) {
+  #photo_container {
+    width: 33.3%;
+    /* height: 40vh; */
+  }
+  /* #photo_title {
+    height: 31%;
+  } */
+}
+
+@media only screen and (max-width: 600px) {
+  #photo_container {
+    width: 50%;
+    /* height: 40vh; */
+  }
+  /* #photo_title {
+    height: 34%;
+  } */
+}
