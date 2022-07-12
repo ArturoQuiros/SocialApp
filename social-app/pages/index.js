@@ -2,7 +2,7 @@ import SearchBar from "../components/SearchBar";
 import styles from "../styles/Home.module.css";
 import { useSession, getSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 export default function Home() {
   const router = useRouter();
@@ -30,7 +30,7 @@ export default function Home() {
     return "Not authenticated...";
   }
 
-  return <div className="App">{hello}</div>;
+  return <div className="App mb-2">{hello}</div>;
 }
 
 export async function getServerSideProps(context) {
