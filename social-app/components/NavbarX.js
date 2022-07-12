@@ -76,7 +76,7 @@ const NavbarX = () => {
             alt="Flowbite Logo"
           />
           <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-            Flowbite
+            Social App
           </span>
         </Navbar.Brand>
         {profileDropdown}

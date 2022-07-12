@@ -81,7 +81,7 @@ export default function Admin() {
   );
 }
 
-/*
+
 export async function getServerSideProps(context) {
   const session = await getSession(context)
 
@@ -98,4 +98,4 @@ export async function getServerSideProps(context) {
     props: { session }
   }
 }
-*/
+

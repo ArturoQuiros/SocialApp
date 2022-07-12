@@ -3,6 +3,7 @@ import Axios from "axios";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export default NextAuth({
+
   providers: [
     CredentialsProvider({
       id: "login",
@@ -46,13 +47,13 @@ export default NextAuth({
   callbacks: {
     session: async ({ session, token }) => {
       if (session?.user) {
-        session.user.id = token.uid; //CAMBIAR id POR _id cuando empiece a usar nuestro API
+        session.user.id = token.uid; 
       }
       return session;
     },
     jwt: async ({ user, token }) => {
       if (user) {
-        token.uid = user.id; //CAMBIAR id POR _id cuando empiece a usar nuestro API
+        token.uid = user.id; 
       }
       return token;
     },

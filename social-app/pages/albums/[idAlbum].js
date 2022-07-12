@@ -149,21 +149,21 @@ export default function Album(props) {
   );
 }
 
-/*
-export async function getServerSideProps(context) {
-  const session = await getSession(context)
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/api/auth/signin',
-        permanent: false,
-      },
-    }
-  }
+// export async function getServerSideProps(context) {
+//   const session = await getSession(context)
 
-  return {
-    props: { session }
-  }
-}
-*/
+//   if (!session) {
+//     return {
+//       redirect: {
+//         destination: '/api/auth/signin',
+//         permanent: false,
+//       },
+//     }
+//   }
+
+//   return {
+//     props: { session }
+//   }
+// }
+
