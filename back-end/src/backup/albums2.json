@@ -1,0 +1,151 @@
+[{
+  "_id": {
+    "$oid": "62d25cee88efae910769912d"
+  },
+  "name": "Better Call Saul",
+  "description": "Some amazing photos of Better Call Saul",
+  "date": {
+    "$date": {
+      "$numberLong": "1657953488689"
+    }
+  },
+  "userId": {
+    "$oid": "62d0dacf7d5837e7dd50c3d8"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62d2617f0c9f844b070b4c8d"
+  },
+  "name": "Breaking Bad",
+  "description": "Some amazing photos of Breaking Bad",
+  "date": {
+    "$date": {
+      "$numberLong": "1657954671955"
+    }
+  },
+  "userId": {
+    "$oid": "62d0dacf7d5837e7dd50c3d8"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62d2618e0c9f844b070b4c8f"
+  },
+  "name": "Warehouse 13",
+  "description": "Some amazing photos of Warehouse 13",
+  "date": {
+    "$date": {
+      "$numberLong": "1657954692487"
+    }
+  },
+  "userId": {
+    "$oid": "62d0dacf7d5837e7dd50c3d8"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62d2619f0c9f844b070b4c91"
+  },
+  "name": "True Detective",
+  "description": "Some amazing photos of True Detective",
+  "date": {
+    "$date": {
+      "$numberLong": "1657954708757"
+    }
+  },
+  "userId": {
+    "$oid": "62d0dacf7d5837e7dd50c3d8"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62d261b20c9f844b070b4c93"
+  },
+  "name": "Stranger Things",
+  "description": "Some amazing photos of Stranger Things",
+  "date": {
+    "$date": {
+      "$numberLong": "1657954727945"
+    }
+  },
+  "userId": {
+    "$oid": "62d0dacf7d5837e7dd50c3d8"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62d261be0c9f844b070b4c95"
+  },
+  "name": "The Boys",
+  "description": "Some amazing photos of The Boys",
+  "date": {
+    "$date": {
+      "$numberLong": "1657954743220"
+    }
+  },
+  "userId": {
+    "$oid": "62d0dacf7d5837e7dd50c3d8"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62d261c80c9f844b070b4c97"
+  },
+  "name": "Peacemaker",
+  "description": "Some amazing photos of Peacemaker",
+  "date": {
+    "$date": {
+      "$numberLong": "1657954752932"
+    }
+  },
+  "userId": {
+    "$oid": "62d0dacf7d5837e7dd50c3d8"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62d261dc0c9f844b070b4c99"
+  },
+  "name": "The Punisher",
+  "description": "Some amazing photos of The Punisher",
+  "date": {
+    "$date": {
+      "$numberLong": "1657954770082"
+    }
+  },
+  "userId": {
+    "$oid": "62d0dacf7d5837e7dd50c3d8"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62d261e80c9f844b070b4c9b"
+  },
+  "name": "Daredevil",
+  "description": "Some amazing photos of Daredevil",
+  "date": {
+    "$date": {
+      "$numberLong": "1657954781905"
+    }
+  },
+  "userId": {
+    "$oid": "62d0dacf7d5837e7dd50c3d8"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62d262020c9f844b070b4c9f"
+  },
+  "name": "The Mandalorian",
+  "description": "Some amazing photos of The Mandalorian",
+  "date": {
+    "$date": {
+      "$numberLong": "1657954808243"
+    }
+  },
+  "userId": {
+    "$oid": "62d0dacf7d5837e7dd50c3d8"
+  },
+  "__v": 0
+}]

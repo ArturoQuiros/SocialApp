@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from "react-redux"
 import mainApi from "../api/mainApi";
 import { onLogoutAlbums } from "../store/app/albumSlice";
 import { onLogoutPhotos } from "../store/app/photoSlice";
+import { onLogoutStats } from "../store/app/statsSlice";
 import { clearErrorMessage, onChecking, onLogin, onLogout } from "../store/auth/authSlice";
 
 export const useAuthStore = () => {
@@ -13,27 +14,18 @@ export const useAuthStore = () => {
     const startLogin = async ({email, password}) => {
         dispatch(onChecking());
         try {
-
-            let data = await mainApi.get(
-            `/users?username=${email}&address.zipcode=${password}`
-            ).then((res) => {
-            return res.data[0];
-            });
-            
-            if(!data){
-                data = await mainApi.get(
-                    `/users?email=${email}&address.zipcode=${password}`
-                ).then((res) => {
-                    return res.data[0];
-                });
-            }
         
-            // const {data} = await mainApi.post('/auth', {email, password});
+            const {data} = await mainApi.post('/users/login', {email, password});
 
-            // localStorage.setItem('token', data.token);
-            // localStorage.setItem('token-init-date', new Date().getTime());
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('token-init-date', new Date().getTime());
 
-            dispatch(onLogin({name: data.name, uid: data.id}));
+            dispatch(onLogin({firstName: data.firstName, 
+                            lastName: data.lastName, 
+                            email: data.email, 
+                            birthDate: data.birthDate, 
+                            gender: data.gender,
+                            uid: data.uid}));
 
         } catch (error) {
             //console.log(error);
@@ -44,51 +36,62 @@ export const useAuthStore = () => {
         }
     }
 
-    const startRegister = async ({email, password, name}) => {
-        // dispatch(onChecking());
-        // try {
+    const startSignUp = async ({firstName, lastName, email, password, birthDate, gender}) => {
+        dispatch(onChecking());
+        try {
             
-        //     const {data} = await mainApi.post('/auth/new', {name, email, password});
+            const {data} = await mainApi.post('/users/signup', {firstName, lastName, email, password, birthDate, gender});
 
-        //     localStorage.setItem('token', data.token);
-        //     localStorage.setItem('token-init-date', new Date().getTime());
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('token-init-date', new Date().getTime());
 
-        //     dispatch(onLogin({name: data.name, uid: data.uid}));
+            dispatch(onLogin({firstName: data.firstName, 
+                lastName: data.lastName, 
+                email: data.email, 
+                birthDate: data.birthDate, 
+                gender: data.gender,
+                uid: data.uid}));
 
-        // } catch (error) {
-        //     //console.log(error);
-        //     dispatch(onLogout(error.response.data?.msg || 'Error'));
-        //     setTimeout(() => {
-        //         dispatch(clearErrorMessage());
-        //     }, 10);
-        // }
+        } catch (error) {
+            //console.log(error);
+            dispatch(onLogout(error.response.data?.msg || 'Error'));
+            setTimeout(() => {
+                dispatch(clearErrorMessage());
+            }, 10);
+        }
     }
 
     const checkAuthToken = async() => {
 
-        // const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token');
 
-        // if (!token) return dispatch(onLogout());
+        if (!token) return dispatch(onLogout());
 
-        // try { //Si no ha expirado el token, crea otro
+        try { //Si no ha expirado el token, crea otro
 
-        //     const {data} = await mainApi.get('/auth/renew');
+            const {data} = await mainApi.get('/users/renew');
             
-        //     localStorage.setItem('token', data.token);
-        //     localStorage.setItem('token-init-date', new Date().getTime());
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('token-init-date', new Date().getTime());
 
-        //     dispatch(onLogin({name: data.name, uid: data.uid}));
+            dispatch(onLogin({firstName: data.firstName, 
+                lastName: data.lastName, 
+                email: data.email, 
+                birthDate: data.birthDate, 
+                gender: data.gender,
+                uid: data.uid}));
             
-        // } catch (error) { //Si ya expiro el token, cierra sesion
-        //     localStorage.clear();
-        //     dispatch(onLogout());
-        // }
+        } catch (error) { //Si ya expiro el token, cierra sesion
+            localStorage.clear();
+            dispatch(onLogout());
+        }
     }
 
     const startLogout = () => {
-        //localStorage.clear();
+        localStorage.clear();
         dispatch(onLogoutAlbums());
         dispatch(onLogoutPhotos());
+        dispatch(onLogoutStats());
         dispatch(onLogout());
     }
 
@@ -97,7 +100,7 @@ export const useAuthStore = () => {
         user, 
         errorMessage,
         startLogin,
-        startRegister,
+        startSignUp,
         checkAuthToken,
         startLogout,
     }

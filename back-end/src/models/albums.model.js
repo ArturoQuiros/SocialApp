@@ -1,10 +1,16 @@
-const mongoose = require('mongoose');
+const {Schema, model} = require('mongoose');
 
-const albumSchema = new mongoose.Schema({
-    userId: {type: mongoose.Types.ObjectId, required: true, ref:'User'},
-    title: {type: String, required: true},
+const albumSchema = Schema({
+    userId: {type: Schema.Types.ObjectId, required: true, ref:'User'},
+    name: {type: String, required: true},
+    description: {type: String, required: true},
+    date: {type: Date, required: true},
 });
 
-const db = mongoose.connection.useDb("socialAppDB")
+albumSchema.method('toJSON', function () {
+    const {__v, _id, ...object} = this.toObject();
+    object.id = _id;
+    return object; 
+});
 
-module.exports = db.model('Album', albumSchema);
+module.exports = model('Album', albumSchema);

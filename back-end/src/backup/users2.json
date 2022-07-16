@@ -1,0 +1,31 @@
+[{
+  "_id": {
+    "$oid": "62d0dacf7d5837e7dd50c3d8"
+  },
+  "firstName": "Panda",
+  "lastName": "Cat",
+  "email": "pandacat2199@gmail.com",
+  "password": "$2a$10$4/XcJklfTUqO7zql8Zt2bOU5Kisj0Hq3mU7dIb6Y29RiqH3FccKce",
+  "birthDate": {
+    "$date": {
+      "$numberLong": "2000000"
+    }
+  },
+  "gender": "M",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62d11c31d70634d5bf1e0327"
+  },
+  "firstName": "Kim",
+  "lastName": "Wexler",
+  "email": "kim@gmail.com",
+  "password": "$2a$10$YtNv9wO3QlhRHaB2ciJTce3950uyLGatVzQf/ix0qVMfh71hH/4xG",
+  "birthDate": {
+    "$date": {
+      "$numberLong": "1657152000000"
+    }
+  },
+  "gender": "F",
+  "__v": 0
+}]

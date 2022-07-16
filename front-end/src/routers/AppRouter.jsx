@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { LoginPage } from "../auth/pages/LoginPage";
+import { SignUpPage } from "../auth/pages/SignUpPage";
 import { useAuthStore } from "../hooks/useAuthStore";
 import { CheckingAuth } from "../ui/components/CheckingAuth";
 import { OtherRoutes } from "./OtherRoutes";
@@ -26,7 +27,8 @@ export const AppRouter = () => {
             (status === 'not-authenticated')
             ? (
               <>
-                <Route path="/auth/*" element={<LoginPage />} />
+                <Route path="/auth/login" element={<LoginPage />} />
+                <Route path="/auth/signup" element={<SignUpPage />} />
                 <Route path="/*" element={<Navigate to='/auth/login' />} />
               </>
             ) : (

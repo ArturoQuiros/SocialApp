@@ -3,47 +3,68 @@ import { createSlice } from '@reduxjs/toolkit';
 export const photoSlice = createSlice({
     name: 'photo',
     initialState: {
+        isSaving: false,
+        isDeleting: false,
         isLoadingPhotos: true,
         photos: [],
         activePhoto: null
     },
     reducers: {
+        savingNewPhoto: (state) => {
+            state.isSaving = true;
+        },
+        deletingPhoto: (state) => {
+            state.isDeleting = true;
+        },
         onSetActivePhoto: (state, {payload} ) => {
             state.activePhoto = payload;
         },
-        // onAddNewEvent: (state, {payload} ) => {
-        //     state.events.push(payload);
-        //     state.activeEvent = null;
-        // },
-        // onUpdateEvent: (state, {payload} ) => {
-        //     state.events = state.events.map( event => {
+        onAddNewPhoto: (state, {payload} ) => {
+            state.photos.push(payload);
+            state.activePhoto = null;
+            state.isSaving = false;
+        },
+        onUpdatePhoto: (state, {payload} ) => {
+            state.photos = state.photos.map( photo => {
 
-        //         if(event.id === payload.id){
-        //             return payload;
-        //         }
+                if(photo.id === payload.id){
+                    return payload;
+                }
 
-        //         return event;
-        //     });
-        // },
-        // onDeleteEvent: (state) => {
-        //     if (state.activeEvent){
-        //         state.events = state.events.filter(event => event.id !== state.activeEvent.id);
-        //         state.activeEvent = null;
-        //     }
-        // },
+                return photo;
+            });
+        },
+        onDeletePhoto: (state) => {
+            if (state.activePhoto){
+                state.photos = state.photos.filter(photo => photo.id !== state.activePhoto.id);
+                state.activePhoto = null;
+                state.isDeleting = false;
+            }
+        },
+        onDeleteAllPhotosOfAlbum: (state) => {
+            state.photos = [];
+            state.activePhoto = null;
+            state.isDeleting = false;
+        },
+        onClearPhotos: (state, {payload = []} ) => {
+            state.photos = [];
+        },
         onLoadPhotos: (state, {payload = []} ) => {
             state.isLoadingPhotos = false;
             //state.photos = payload;
+            state.photos = [];
             payload.forEach(photo => {
                 const exists = state.photos.some(dbPhoto => dbPhoto.id === photo.id);
                 if (!exists){
                     state.photos.push(photo);
                 }
             })
+            
         },
         onSearchPhotos: (state, {payload = []} ) => {
             state.isLoadingPhotos = false;
             state.photos = payload;
+            state.isSaving = false;
         },
         onLogoutPhotos: (state) => {
             state.isLoadingPhotos = true;
@@ -53,4 +74,5 @@ export const photoSlice = createSlice({
     }
 });
 
-export const { onSetActivePhoto, onLoadPhotos, onLogoutPhotos, onSearchPhotos } = photoSlice.actions;
+export const { savingNewPhoto, deletingPhoto, onSetActivePhoto, onClearPhotos, onLoadPhotos, onLogoutPhotos, 
+    onSearchPhotos, onAddNewPhoto, onUpdatePhoto, onDeletePhoto, onDeleteAllPhotosOfAlbum } = photoSlice.actions;

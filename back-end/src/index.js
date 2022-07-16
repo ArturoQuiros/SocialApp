@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const HttpError = require('./models/http-error')
 const cors = require('cors');
+require('dotenv').config();
 
 const app = express();
 
@@ -9,24 +10,27 @@ const usersRouter = require("./routes/users.router");
 const albumsRouter = require("./routes/albums.router");
 const photosRouter = require("./routes/photos.router");
 
-const port = 3333;
+const port = process.env.PORT;
 
-const url = 'mongodb+srv://panda:1234@cluster0.t8gjx.mongodb.net/?retryWrites=true&w=majority';
+const url = process.env.DB_CNN;
+
+//Allow requests only from our front-end
+// app.use(cors({
+//   origin: 'https://www.google.com'
+// }));
+app.use(cors());
+
+app.use(express.static('public'));
 
 app.use(express.json());
-
-//Allow requests only from google.com
-app.use(cors({
-  origin: 'https://www.google.com'
-}));
-
-app.get('/', (req, res) => {
-  res.send('Hello!');
-});
 
 app.use("/api/users", usersRouter);
 app.use("/api/albums", albumsRouter);
 app.use("/api/photos", photosRouter);
+
+app.get('*', (req, res) => {
+  res.sendFile( __dirname + '/public/index.html');
+})
 
 app.use((req, res) => {
   const error = new HttpError("Could not find this route...", 404);

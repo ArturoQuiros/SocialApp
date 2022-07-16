@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux"
 import Swal from "sweetalert2";
 import mainApi from "../api/mainApi";
-import { onLoadAlbums, onSearchAlbums, onSetActiveAlbum } from "../store/app/albumSlice";
+import { onAddNewAlbum, onDeleteAlbum, onLoadAlbums, onSearchAlbums, onSetActiveAlbum, onUpdateAlbum } from "../store/app/albumSlice";
 
 export const useAlbumStore = () => {
 
@@ -11,52 +11,64 @@ export const useAlbumStore = () => {
     const {user} = useSelector(state => state.auth);
 
     const setActiveAlbum = (album) => {
+        localStorage.setItem('activeAlbum', album.id);
         dispatch(onSetActiveAlbum(album));
     }
 
-    // const startSavingEvent = async(calendarEvent) => {
+    const startSavingAlbum = async(album) => {
 
-    //     try {
+        try {
 
-    //         if (calendarEvent.id){ //Update
-    //             await mainApi.put(`/events/${calendarEvent.id}`, calendarEvent);
-    //             dispatch(onUpdateEvent({...calendarEvent, user}));
-    //             return;
-    //         }
+            if (album.id){ //Update
+                await mainApi.put(`/albums/${album.id}`, album);
+                dispatch(onUpdateAlbum({...album}));
+                Swal.fire('Album updated!', 'The album was updated successfully!', 'success');
+                return;
+            }
 
-    //         //Create
-    //         const {data} = await mainApi.post('/events', calendarEvent);
-    //         dispatch(onAddNewEvent({...calendarEvent, id: data.evento.id, user}));
+            //Create
+            const {data} = await mainApi.post('/albums', album);
+            dispatch(onAddNewAlbum({...album, id: data.data.id}));
+            Swal.fire('Album created!', 'The album was created successfully!', 'success');
             
-    //     } catch (error) {
-    //         //console.log(error);
-    //         Swal.fire('Error al guardar', error.response.data?.msg, 'error');
-    //     }
+        } catch (error) {
+            console.log(error);
+            Swal.fire('Error while saving album', error.response, 'error');
+        }
         
-    // }
+    }
 
-    // const startDeletingEvent = async() => {
+    const startDeletingAlbum = async(album) => {
 
-    //     try {
+        try {
 
-    //         await mainApi.delete(`/events/${activeAlbum.id}`);
+            try {
 
-    //         dispatch(onDeleteEvent());
-            
-    //     } catch (error) {
-    //         //console.log(error);
-    //         Swal.fire('Error al eliminar', error.response.data?.msg, 'error');
-    //     }
+                const {data} = await mainApi.get(`/photos?albumId=${album.id}`);
+
+                Swal.fire('Error while deleting album', 'This album is not empty, delete its photos first', 'error');
+
+            } catch (error) {
+
+                await mainApi.delete(`/albums/${album.id}`);
+                dispatch(onDeleteAlbum());
+                Swal.fire('Album deleted!', 'The album was deleted successfully!', 'success');
+                
+            }
+
+        } catch (error) {
+            //console.log(error);
+            Swal.fire('Error while deleting album', error.response, 'error');
+        }
         
-    // }
+    }
 
     const startLoadingAlbums = async () => {
         try {
             
             const {data} = await mainApi.get(`/albums?userId=${user.uid}`);
-            //console.log(data);
 
-            dispatch(onLoadAlbums(data));
+            dispatch(onLoadAlbums(data.data));
 
         } catch (error) {
             console.log(error);
@@ -66,19 +78,22 @@ export const useAlbumStore = () => {
     const startSearchingAlbums = async (value) => {
         try {
 
-            const {data} = await mainApi.get(`/albums?userId=${user.uid}`);
-
             if (value === "") {
-                dispatch(onSearchAlbums(data));
-            }else{
-                const search = data.filter((album) => album.title.includes(value));
 
-                if(search[0]){
-                    dispatch(onSearchAlbums(search));
+                const {data} = await mainApi.get(`/albums?userId=${user.uid}`);
+                dispatch(onSearchAlbums(data.data));
+
+            }else{
+
+                try {
+                    const {data} = await mainApi.get(`/albums?s=${value}`);
+
+                    dispatch(onSearchAlbums(data.data));
                     return false;
-                }else{
+                } catch (error) {
                     return true;
                 }
+
             }
 
         } catch (error) {
@@ -91,8 +106,8 @@ export const useAlbumStore = () => {
         activeAlbum: activeAlbum,
         hasAlbumSelected: !!activeAlbum, //null = false, object = true
         setActiveAlbum,
-        //startSavingEvent,
-        //startDeletingEvent,
+        startSavingAlbum,
+        startDeletingAlbum,
         startLoadingAlbums,
         startSearchingAlbums,
     }
