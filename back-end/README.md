@@ -8,9 +8,8 @@
 2. Make the necessary changes to the environment variables
 
 ```
-VITE_API_URL=xxx
-CLOUDINARY_CLOUD_NAME=xxx
-CLOUDINARY_API_KEY=xxx
-CLOUDINARY_UPLOAD_PRESET=xxx
+PORT=xxx
+DB_CNN=xxx
+SECRET_JWT_SEED=xxx
 
 ```

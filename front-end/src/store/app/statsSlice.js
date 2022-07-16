@@ -14,7 +14,8 @@ export const statsSlice = createSlice({
             state.statsY = payload;
         },
         onLogoutStats: (state) => {
-            state.stats = [];
+            state.statsX = [];
+            state.statsY = [];
         },
     }
 });
