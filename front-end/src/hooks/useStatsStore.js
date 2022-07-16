@@ -40,7 +40,7 @@ export const useStatsStore = () => {
             dispatch(onLoadStatsY(statsY2));
 
         } catch (error) {
-            console.log(error);
+            //console.log(error);
         }
 
     }
