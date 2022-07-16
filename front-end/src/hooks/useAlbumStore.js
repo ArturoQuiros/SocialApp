@@ -32,7 +32,7 @@ export const useAlbumStore = () => {
             Swal.fire('Album created!', 'The album was created successfully!', 'success');
             
         } catch (error) {
-            console.log(error);
+            //console.log(error);
             Swal.fire('Error while saving album', error.response, 'error');
         }
         
@@ -71,7 +71,7 @@ export const useAlbumStore = () => {
             dispatch(onLoadAlbums(data.data));
 
         } catch (error) {
-            console.log(error);
+            //console.log(error);
         }
     }
 
@@ -97,7 +97,7 @@ export const useAlbumStore = () => {
             }
 
         } catch (error) {
-            console.log(error);
+            //console.log(error);
         }
     }
 

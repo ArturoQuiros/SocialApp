@@ -51,7 +51,7 @@ export const usePhotoStore = () => {
             Swal.fire('Photo uploaded!', 'The photo was uploaded successfully!', 'success');
             
         } catch (error) {
-            console.log(error);
+            //console.log(error);
             Swal.fire('Error while saving photo', error.response, 'error');
         }
         
@@ -109,7 +109,7 @@ export const usePhotoStore = () => {
             Swal.fire('Photos uploaded!', 'The photos were uploaded successfully!', 'success');
             
         } catch (error) {
-            console.log(error);
+            //console.log(error);
             Swal.fire('Error while saving photo', error.response, 'error');
         }
         
@@ -133,7 +133,7 @@ export const usePhotoStore = () => {
             Swal.fire('Photo deleted!', 'The photo was deleted successfully!', 'success');
             
         } catch (error) {
-            console.log(error);
+            //console.log(error);
             Swal.fire('Error while deleting photo', error, 'error');
         }
         
@@ -174,7 +174,7 @@ export const usePhotoStore = () => {
             Swal.fire('Photos deleted!', 'The photos were deleted successfully!', 'success');
             
         } catch (error) {
-            console.log(error);
+            //console.log(error);
             Swal.fire('Error while deleting photos', error, 'error');
         }
         
@@ -190,7 +190,7 @@ export const usePhotoStore = () => {
             dispatch(onLoadPhotos(data.data));
 
         } catch (error) {
-            console.log(error);
+            //console.log(error);
         }
     }
 
@@ -216,7 +216,7 @@ export const usePhotoStore = () => {
             }
 
         } catch (error) {
-            console.log(error);
+            //console.log(error);
         }
     }
 

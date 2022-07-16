@@ -22,11 +22,11 @@ export const NavbarX = () => {
       >
         <Dropdown.Header>
           <span className="block text-sm">{}</span>
-          <span className="block truncate text-sm font-medium">
+          <span className="block truncate text-sm font-medium px-2">
             {user.firstName}{" "}{user.lastName}
           </span>
         </Dropdown.Header>
-        <Dropdown.Item>Settings</Dropdown.Item>
+        <Dropdown.Item><a className="py-4 px-4">Settings</a></Dropdown.Item>
         <Dropdown.Divider />
         <Dropdown.Item>
           <a className="py-4 px-4" onClick={startLogout}>Log out</a>
