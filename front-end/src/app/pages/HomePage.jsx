@@ -50,8 +50,17 @@ export const HomePage = () => {
         <div className="px-6 py-2.5 text-3xl text-center font-bold text-slate-900 mt-4">
           Welcome, {user.firstName} {user.lastName} 
         </div>
-        <h1 className="px-6 py-2.5 text-xl font-bold text-slate-900 m-4">Here are your stats:</h1>
-        <ReactECharts option={options} className="mb-80"/>
+        {
+          (statsX[0]) ? (
+            <>
+              <h1 className="px-6 py-2.5 text-xl font-bold text-slate-900 m-4">Here are your stats:</h1>
+              <ReactECharts option={options} className="mb-80"/>
+            </>
+          ) : (
+            <h1 className="px-6 py-2.5 text-xl font-bold text-slate-900 m-4">You have no stats yet</h1>
+          )
+        }
+        
 
     </div>
   )
