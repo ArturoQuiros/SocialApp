@@ -1,11 +1,6 @@
 import mainApi from "../api/mainApi";
 import { getEnvVariables } from "./getEnvVariables";
-let {CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_UPLOAD_PRESET} = getEnvVariables();
-
-//Fix, undefined .env
-CLOUDINARY_CLOUD_NAME="dszgkhxlc";
-CLOUDINARY_API_KEY="553711114944398";
-CLOUDINARY_UPLOAD_PRESET="social-app";
+let {VITE_CLOUD_NAME, VITE_API_KEY, VITE_UPLOAD_PRESET} = getEnvVariables();
 
 export const fileUpload = async (file) => {
 
@@ -16,14 +11,14 @@ export const fileUpload = async (file) => {
 
     try {
 
-        const {data} = await mainApi.get(`/photos/signature?timestamp=${timestamp}&upload_preset=${CLOUDINARY_UPLOAD_PRESET}`);
+        const {data} = await mainApi.get(`/photos/signature?timestamp=${timestamp}&upload_preset=${VITE_UPLOAD_PRESET}`);
         //console.log(data);
 
-        const cloudUrl = 'https://api.cloudinary.com/v1_1/'+CLOUDINARY_CLOUD_NAME+'/image/upload';
+        const cloudUrl = 'https://api.cloudinary.com/v1_1/'+VITE_CLOUD_NAME+'/image/upload';
         const formData = new FormData();
-        formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+        formData.append('upload_preset', VITE_UPLOAD_PRESET);
         formData.append('file', file);
-        formData.append('api_key', CLOUDINARY_API_KEY);
+        formData.append('api_key', VITE_API_KEY);
         formData.append("timestamp", timestamp);
         formData.append("signature", data);
 
