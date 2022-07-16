@@ -7,14 +7,14 @@ const mainApi = axios.create({
     baseURL: VITE_API_URL,
 })
 
-// mainApi.interceptors.request.use( config => { //todas las requests mandan el token
-//     config.headers = {
-//         ...config.headers,
-//         'x-token': localStorage.getItem('token') 
-//     }
+mainApi.interceptors.request.use( config => { //todas las requests mandan el token
+    config.headers = {
+        ...config.headers,
+        'x-token': localStorage.getItem('token') 
+    }
 
-//     return config;
-// })
+    return config;
+})
 
 export default mainApi;
 

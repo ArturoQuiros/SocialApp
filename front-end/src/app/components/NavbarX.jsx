@@ -23,13 +23,13 @@ export const NavbarX = () => {
         <Dropdown.Header>
           <span className="block text-sm">{}</span>
           <span className="block truncate text-sm font-medium">
-            {user.name}{" "}
+            {user.firstName}{" "}{user.lastName}
           </span>
         </Dropdown.Header>
         <Dropdown.Item>Settings</Dropdown.Item>
         <Dropdown.Divider />
         <Dropdown.Item>
-          <a onClick={startLogout}>Log out</a>
+          <a className="py-4 px-4" onClick={startLogout}>Log out</a>
         </Dropdown.Item>
       </Dropdown>
       <Navbar.Toggle />
@@ -37,7 +37,7 @@ export const NavbarX = () => {
   );
 
   return (
-    <>
+    <div className="border-2 rounded-lg mt-2">
       <Navbar fluid={true} rounded={true}>
         <Navbar.Brand>
           <img
@@ -66,6 +66,6 @@ export const NavbarX = () => {
           </NavLink>
         </Navbar.Collapse>
       </Navbar>
-    </>
+    </div>
   );
 };

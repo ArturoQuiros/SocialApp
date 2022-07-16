@@ -1,179 +1,189 @@
+const {response} = require('express');
+const bcrypt = require('bcryptjs');
+const { generarJWT } = require('../helpers/jwt');
 const User = require("../models/users.model");
 const HttpError = require('../models/http-error')
 const { ReasonPhrases, StatusCodes } = require("http-status-codes")
 
-const addUser = async (req, res, next) => {//add a user
-
-    const {username, email, password} = req.body;
-
-    let existingUser;
-
-    try{
-        existingUser = await User.findOne({email: email});
-    }catch(err){
-        return next(new HttpError(err, 500))
-    }
-
-    if(existingUser){
-        return next(new HttpError("Email already exists", 422))
-    }
-
-    try{
-        existingUser = await User.findOne({username: username});
-    }catch(err){
-        return next(new HttpError(err, 500))
-    }
-
-    if(existingUser){
-        return next(new HttpError("Username already exists", 422))
-    }
-
-    if(password.length < 8){
-        return next(new HttpError("Password has to be at least 8 characters long", 422))
-    }
-
-    const addedUser = new User({
-        name: req.body.name, 
-        username: req.body.username,
-        email: req.body.email,
-        password: req.body.password,
-        phone: req.body.phone,
-        website: req.body.website,
-        address: {
-            street: req.body.address.street,
-            suite: req.body.address.suite,
-            city: req.body.address.city,
-            zipcode: req.body.address.zipcode,
-            geo: {
-                lat: req.body.address.geo.lat,
-                lng: req.body.address.geo.lng,
-            },
-        },
-        company: {
-            name: req.body.company.name,
-            catchPhrase: req.body.company.catchPhrase,
-            bs: req.body.company.bs,
-        },
-    });
-
-    try{
-        await addedUser.save();
-    }catch(err){
-        return next(new HttpError("Signing up failed, please try again", 500))
-    }
-
-    res.status(StatusCodes.CREATED).json({
-        message: ReasonPhrases.CREATED,
-        data: addedUser.toObject({getters: true})
-    })
-
-}
-
-const login = async (req, res, next) => {//login
+const addUser = async (req, res = response, next) => { //add a user
 
     const {email, password} = req.body;
-    let existingUser;
 
     try{
-        existingUser = await User.findOne({email: email});
-    }catch(err){
-        return next(new HttpError("Login Failed", 500))
-    }
 
-    if (!existingUser){
-        try{
-            existingUser = await User.findOne({username: email});
-        }catch(err){
-            return next(new HttpError("Login Failed", 500))
-        }
-    }
+        let usuario = await User.findOne({email});
 
-    if (!existingUser || existingUser.password !== password){
-        return next(new HttpError("Invalid credentials", 401))
-    }
-
-    res.json(existingUser);
-
-    // const result = await User.find({ $or: [{username: req.body.email}, {email: req.body.email}], 'address.zipcode': req.body.password }).exec();
-    // res.json(result);
-}
-
-const getUsers = async (req, res, next) => { //find all users or user by id
-
-    const idParam = req.query.id;
-
-    if(idParam){
-        let user;
-
-        try{
-            user = await User.findById(idParam).exec();
-        }catch(err){
-            return next(new HttpError("Not found", 400))
-        }
-
-        if(user){
-            res.status(StatusCodes.OK).json({
-                message: ReasonPhrases.OK,
-                data: user.toObject({getters: true}),
-            });
-        }else{
-            res.status(StatusCodes.NOT_FOUND).json({
-                message: ReasonPhrases.NOT_FOUND
+        if (usuario){
+            return res.status(400).json({
+                ok: false,
+                msg: 'Email already registered',
             });
         }
-    }else{
-        let users;
-        try{
-            users = await User.find().exec();
-        }catch(err){
-            return next(new HttpError(err, 404))
-        }
-        res.status(StatusCodes.OK).json({
-            message: ReasonPhrases.OK,
-            data: users,
+
+        usuario = new User(req.body);
+
+        const salt = bcrypt.genSaltSync();
+        usuario.password = bcrypt.hashSync(password, salt);
+
+        await usuario.save();
+
+        const token = await generarJWT(usuario.id, usuario.firstName, usuario.lastName, usuario.email, usuario.birthDate, usuario.gender);
+    
+        res.status(201).json({
+            ok: true,
+            uid: usuario.id,
+            firstName: usuario.firstName,
+            lastName: usuario.lastName,
+            email: usuario.email,
+            birthDate: usuario.birthDate,
+            gender: usuario.gender,
+            token
+        });
+
+    }catch(error){
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Please talk to the admin',
         });
     }
 
 }
 
-const getUser = async (req, res, next) => { //find a user by id
+const login = async (req, res = response, next) => {//login
+
+    const { email, password } = req.body;
+
+    try{
+
+        const usuario = await User.findOne({email});
+
+        if (!usuario){
+            return res.status(400).json({
+                ok: false,
+                msg: 'Invalid credentials',
+            });
+        }
+
+        const validPassword = bcrypt.compareSync(password, usuario.password);
+
+        if (!validPassword) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'Invalid credentials',
+            });
+        }
+
+        const token = await generarJWT(usuario.id, usuario.firstName, usuario.lastName, usuario.email, usuario.birthDate, usuario.gender);
+
+        res.json({
+            ok: true,
+            uid: usuario.id,
+            firstName: usuario.firstName,
+            lastName: usuario.lastName,
+            email: usuario.email,
+            birthDate: usuario.birthDate,
+            gender: usuario.gender,
+            token
+        });
+
+    }catch(error){
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Please talk to the admin',
+        });
+    }
+
+}
+
+const revalidateToken = async (req, res = response) => {
+
+    const {uid, firstName, lastName, email, birthDate, gender} = req;
+
+    const token = await generarJWT(uid, firstName, lastName, email, birthDate, gender);
+
+    res.json({
+        ok: true,
+        uid,
+        firstName,
+        lastName, 
+        email, 
+        birthDate, 
+        gender,
+        token
+    });
+}
+
+const checkPassword = async (req, res = response, next) => { //Check password by id
 
     const idParam = req.params.id;
-    let user;
-
-    try{
-        user = await User.findById(idParam).exec();
-    }catch(err){
-        return next(new HttpError("Not found", 400))
-    }
-
-    if(user){
-        res.status(StatusCodes.OK).json({
-            message: ReasonPhrases.OK,
-            data: user.toObject({getters: true}),
-        });
-    }else{
-        res.status(StatusCodes.NOT_FOUND).json({
-            message: ReasonPhrases.NOT_FOUND
-        });
-    }
+    await checkAPassword(req,res,next,idParam);
+    
 }
 
-const updateUser = async (req, res, next) => { //update a user by id
+const checkPassword2 = async (req, res = response, next) => { //Check password by id
+
+    const idParam = req.query.id;
+    await checkAPassword(req,res,next,idParam);
+
+}
+
+const checkAPassword = async (req, res = response, next, idParam) => {//Check password
+
+    const { password } = req.body;
+
+    try{
+
+        const usuario = await User.findById(idParam).exec();
+
+        if (!usuario){
+            return res.status(400).json({
+                ok: false,
+                msg: 'Invalid user ID',
+            });
+        }
+
+        const validPassword = bcrypt.compareSync(password, usuario.password);
+
+        if (!validPassword) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'Invalid password',
+            });
+        }
+
+        res.json({
+            ok: true,
+            uid: usuario.id,
+            firstName: usuario.firstName,
+        });
+
+    }catch(error){
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Please talk to the admin',
+        });
+    }
+
+}
+
+const updateUser = async (req, res = response, next) => { //update a user by id
 
     const idParam = req.params.id;
     await updateAUser(req,res,next,idParam);
     
 }
 
-const updateUser2 = async (req, res, next) => { //update a user by id
+const updateUser2 = async (req, res = response, next) => { //update a user by id
 
     const idParam = req.query.id;
     await updateAUser(req,res,next,idParam);
 
 }
 
-const updateAUser = async (req, res, next, idParam) => {
+const updateAUser = async (req, res = response, next, idParam) => {
 
     let oldUser;
     try{
@@ -195,43 +205,18 @@ const updateAUser = async (req, res, next, idParam) => {
     if(duplicate[0]){
         return next(new HttpError("Email already exists", 422))
     }
-
-    try{
-        duplicate = await User.find({_id: { $ne: idParam}, username: req.body.username}).exec();
-    }catch(err){
-        return next(new HttpError(err, 500))
-    }
-
-    if(duplicate[0]){
-        return next(new HttpError("Username already exists", 422))
-    }
     
     if (oldUser){
 
         const user = await User.findByIdAndUpdate(
             idParam,
             { 
-                name: req.body.name, 
-                username: req.body.username,
+                firstName: req.body.firstName, 
+                lastName: req.body.lastName,
                 email: req.body.email,
                 password: oldUser.password, //Dont change the "password" here
-                phone: req.body.phone,
-                website: req.body.website,
-                address: {
-                    street: req.body.address.street,
-                    suite: req.body.address.suite,
-                    city: req.body.address.city,
-                    zipcode: req.body.address.zipcode, 
-                    geo: {
-                        lat: req.body.address.geo.lat,
-                        lng: req.body.address.geo.lng,
-                    },
-                },
-                company: {
-                    name: req.body.company.name,
-                    catchPhrase: req.body.company.catchPhrase,
-                    bs: req.body.company.bs,
-                },
+                birthDate: req.body.birthDate,
+                gender: req.body.gender,
             },
             {
               new: true,
@@ -240,7 +225,7 @@ const updateAUser = async (req, res, next, idParam) => {
 
         res.status(StatusCodes.OK).json({
             message: ReasonPhrases.OK,
-            data: user.toObject({getters: true}),
+            data: user,
         });
     }else{
         res.status(StatusCodes.NOT_FOUND).json({
@@ -250,21 +235,21 @@ const updateAUser = async (req, res, next, idParam) => {
 
 }
 
-const updatePassword = async (req, res, next) => { //update a user password by id
+const updatePassword = async (req, res = response, next) => { //update a user password by id
 
     const idParam = req.params.id;
     await updateAUserPassword(req,res,next,idParam);
     
 }
 
-const updatePassword2 = async (req, res, next) => { //update a user password by id
+const updatePassword2 = async (req, res = response, next) => { //update a user password by id
 
     const idParam = req.query.id;
     await updateAUserPassword(req,res,next,idParam);
     
 }
 
-const updateAUserPassword = async (req, res, next, idParam) => {
+const updateAUserPassword = async (req, res = response, next, idParam) => {
 
     let oldUser;
     try{
@@ -272,24 +257,26 @@ const updateAUserPassword = async (req, res, next, idParam) => {
     }catch(err){
         return next(new HttpError(err, 400))
     }
-
-    if(req.body.password.length < 8){
-        return next(new HttpError("Password has to be at least 8 characters long", 422))
-    }
     
     if (oldUser){
 
+        const pass = req.body.password;
+
+        const salt = bcrypt.genSaltSync();
+        const password = bcrypt.hashSync(pass, salt);
+
         const user = await User.findByIdAndUpdate(
             idParam,
-            { password: req.body.password, },
+            { password: password, },
             {
               new: true,
             }
           ).exec();
 
+
         res.status(StatusCodes.OK).json({
             message: ReasonPhrases.OK,
-            data: user.toObject({getters: true}),
+            data: "Password changed",
         });
     }else{
         res.status(StatusCodes.NOT_FOUND).json({
@@ -299,72 +286,25 @@ const updateAUserPassword = async (req, res, next, idParam) => {
 
 }
 
-const deleteUser = async (req, res, next) => { //delete a user by id
+const deleteUsers = async (req, res = response, next) => { //delete all users
 
-    const idParam = req.params.id;
-
-    let user;
+    let result;
     try{
-        user = await User.findById(idParam).exec();
+        result = await User.deleteMany({}).exec();
     }catch(err){
         return next(new HttpError("Not found", 400))
     }
-
-    if (user){
-        await user.remove();
-        res.status(StatusCodes.OK).json({
-            message: ReasonPhrases.OK,
-            data: "User Deleted!",
-        });
-    }else{
-        res.status(StatusCodes.NOT_FOUND).json({
-            message: ReasonPhrases.NOT_FOUND
-        });
-    }
-}
-
-const deleteUsers = async (req, res, next) => { //delete all users or user by id
-
-    let idParam = req.query.id;
-
-    if(idParam){
-        let user;
-        try{
-            user = await User.findById(idParam).exec();
-        }catch(err){
-            return next(new HttpError("Not found", 400))
-        }
-
-        if (user){
-            await user.remove();
-            res.status(StatusCodes.OK).json({
-                message: ReasonPhrases.OK,
-                data: "User Deleted!",
-            });
-        }else{
-            res.status(StatusCodes.NOT_FOUND).json({
-                message: ReasonPhrases.NOT_FOUND
-            });
-        }
-    }else{
-        let result;
-        try{
-            result = await User.deleteMany({}).exec();
-        }catch(err){
-            return next(new HttpError("Not found", 400))
-        }
-        res.json(result);
-    }
+    res.json(result);
 
 }
 
 exports.addUser = addUser;
-exports.getUsers = getUsers;
 exports.login = login;
-exports.getUser = getUser;
+exports.revalidateToken = revalidateToken;
+exports.checkPassword = checkPassword;
+exports.checkPassword2 = checkPassword2;
 exports.updateUser = updateUser;
 exports.updateUser2 = updateUser2;
 exports.updatePassword = updatePassword;
 exports.updatePassword2 = updatePassword2;
-exports.deleteUser = deleteUser;
 exports.deleteUsers = deleteUsers;

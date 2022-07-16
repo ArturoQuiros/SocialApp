@@ -43,10 +43,10 @@ export const SearchBar = (props) => {
   };
 
   return (
-    <>
-      <form className="flex items-center my-8">
+    <div className="grid justify-items-center">
+      <form className="flex items-center my-4 w-11/12">
         <label htmlFor="simple-search" className="sr-only">
-          Search by Title
+          Search by Name
         </label>
         <div className="relative w-full">
           <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
@@ -67,7 +67,7 @@ export const SearchBar = (props) => {
             type="text"
             id="simple-search"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Search by Title"
+            placeholder="Search by Name"
             value={value}
             onChange={(e) => {
               setValue(e.currentTarget.value);
@@ -96,6 +96,6 @@ export const SearchBar = (props) => {
           </svg>
         </button>
       </form>
-    </>
+    </div>
   );
 };

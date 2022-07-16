@@ -1,54 +1,41 @@
+const {response} = require('express');
 const Album = require("../models/albums.model");
 const HttpError = require('../models/http-error')
 const { ReasonPhrases, StatusCodes } = require("http-status-codes")
 
-const addAlbum = async (req, res, next) => {//add an album
-    const addedAlbum = new Album({
-        userId: req.body.userId, 
-        title: req.body.title,
-    });
+const addAlbum = async (req, res = response, next) => {//add an album
+
+    const addedAlbum = new Album(req.body);
 
     try{
-        await addedAlbum.save();
+        
+        addedAlbum.userId = req.uid;
+
+        const album = await addedAlbum.save();
+
+        res.status(StatusCodes.CREATED).json({
+            message: ReasonPhrases.CREATED,
+            data: album
+        })
+
     }catch(err){
-        return next(new HttpError(err, 404))
+        return next(new HttpError(err, 500))
     }
 
-    res.status(StatusCodes.CREATED).json({
-        message: ReasonPhrases.CREATED,
-        data: addedAlbum.toObject({getters: true})
-    })
 }
 
-const getAlbums = async (req, res, next) => { //find all albums or album by id or albums by title (search case insensitive)
+const getAlbums = async (req, res = response, next) => { //find all albums, albums by userId, album by id, albums by name (search case insensitive)
 
     const idParam = req.query.id;
-    const searchTitle = req.query.s;
+    const searchName = req.query.s;
+    const userId = req.query.userId;
 
-    if(idParam){
-        let album;
+    if(userId){
 
-        try{
-            album = await Album.findById(idParam).exec();
-        }catch(err){
-            return next(new HttpError("Not found", 400))
-        }
-
-        if(album){
-            res.status(StatusCodes.OK).json({
-                message: ReasonPhrases.OK,
-                data: album.toObject({getters: true}),
-            });
-        }else{
-            res.status(StatusCodes.NOT_FOUND).json({
-                message: ReasonPhrases.NOT_FOUND
-            });
-        }
-    }else if(searchTitle){
         let albums;
 
         try{
-            albums = await Album.find({ title: { $regex: searchTitle, $options: "i" } }); //Case insensitive
+            albums = await Album.find({userId}); 
         }catch(err){
             return next(new HttpError("Not found", 400))
         }
@@ -63,7 +50,53 @@ const getAlbums = async (req, res, next) => { //find all albums or album by id o
                 message: ReasonPhrases.NOT_FOUND
             });
         }
+
+    }else if(searchName){
+
+        const uid = req.uid;
+
+        let albums;
+
+        try{
+            albums = await Album.find({ userId: uid, name: { $regex: searchName, $options: "i" } }); //Case insensitive
+        }catch(err){
+            return next(new HttpError("Not found", 400))
+        }
+
+        if(albums[0]){
+            res.status(StatusCodes.OK).json({
+                message: ReasonPhrases.OK,
+                data: albums
+            });
+        }else{
+            res.status(StatusCodes.NOT_FOUND).json({
+                message: ReasonPhrases.NOT_FOUND
+            });
+        }
+
+    }else if(idParam){
+
+        let album;
+
+        try{
+            album = await Album.findById(idParam).exec();
+        }catch(err){
+            return next(new HttpError("Not found", 400))
+        }
+
+        if(album){
+            res.status(StatusCodes.OK).json({
+                message: ReasonPhrases.OK,
+                data: album
+            });
+        }else{
+            res.status(StatusCodes.NOT_FOUND).json({
+                message: ReasonPhrases.NOT_FOUND
+            });
+        }
+
     }else{
+
         let albums;
         try{
             albums = await Album.find().exec();
@@ -74,11 +107,12 @@ const getAlbums = async (req, res, next) => { //find all albums or album by id o
             message: ReasonPhrases.OK,
             data: albums,
         });
+
     }
 
 }
 
-const getAlbum = async (req, res, next) => { //find an album by id
+const getAlbum = async (req, res = response, next) => { //find an album by id
 
     const idParam = req.params.id;
     let album;
@@ -92,7 +126,7 @@ const getAlbum = async (req, res, next) => { //find an album by id
     if(album){
         res.status(StatusCodes.OK).json({
             message: ReasonPhrases.OK,
-            data: album.toObject({getters: true}),
+            data: album
         });
     }else{
         res.status(StatusCodes.NOT_FOUND).json({
@@ -101,13 +135,14 @@ const getAlbum = async (req, res, next) => { //find an album by id
     }
 }
 
-const getAlbumsByTitle = async (req, res, next) => { //find albums by title (search case insensitive)
+const getAlbumsByName = async (req, res = response, next) => { //find albums by name (search case insensitive)
 
-    const searchTitle = req.params.s;
+    const uid = req.uid;
+    const searchName = req.params.s;
     let albums;
 
     try{
-        albums = await Album.find({ title: { $regex: searchTitle, $options: "i" } }); //Case insensitive
+        albums = await Album.find({ userId: uid, name: { $regex: searchName, $options: "i" } }); //Case insensitive
     }catch(err){
         return next(new HttpError("Not found", 400))
     }
@@ -124,117 +159,113 @@ const getAlbumsByTitle = async (req, res, next) => { //find albums by title (sea
     }
 }
 
-const updateAlbum = async (req, res, next) => { //update an album by id
+const updateAlbum = async (req, res = response, next) => { //update an album by id
 
     const idParam = req.params.id;
     await updateAnAlbum(req,res,next,idParam);
 
 }
 
-const updateAlbum2 = async (req, res, next) => { //update an album by id
+const updateAlbum2 = async (req, res = response, next) => { //update an album by id
 
     const idParam = req.query.id;
     await updateAnAlbum(req,res,next,idParam);
 
 }
 
-const updateAnAlbum = async (req, res, next, idParam) => {
+const updateAnAlbum = async (req, res = response, next, idParam) => {
     
-    // const result = await Album.updateOne({ _id: idParam}, { $set: { title: req.body.title } }).exec();
-    // res.json(result);
-
-    const {title} = req.body;
+    const uid = req.uid;
 
     let album;
     try{
-        album = await Album.findByIdAndUpdate(
-            idParam,
-            { title },
-            {
-              new: true,
-            }
-          ).exec();
+
+        const alb = await Album.findById(idParam);
+
+        if(!alb){
+            return res.status(StatusCodes.NOT_FOUND).json({
+                message: ReasonPhrases.NOT_FOUND
+            });
+        }
+
+        if(alb.userId.toString() !== uid){
+            return res.status(401).json({
+                ok: false,
+                msg: "You don't have permission to modify this album",
+            });
+        }
+
+        const newAlbum = {
+            ...req.body,
+            userId: uid
+        }
+
+        album = await Album.findByIdAndUpdate(idParam, newAlbum, {new: true}).exec();
+
+        res.status(StatusCodes.OK).json({
+            message: ReasonPhrases.OK,
+            data: album
+        });
+
     }catch(err){
         return next(new HttpError(err, 400))
     }
 
-    if (album){
-        res.status(StatusCodes.OK).json({
-            message: ReasonPhrases.OK,
-            data: album.toObject({getters: true}),
-        });
-    }else{
-        res.status(StatusCodes.NOT_FOUND).json({
-            message: ReasonPhrases.NOT_FOUND
-        });
-    }
-
 }
 
-const deleteAlbum = async (req, res, next) => { //delete an album by id
+const deleteAlbum = async (req, res = response, next) => { //delete an album by id
 
     const idParam = req.params.id;
+    await deleteAnAlbum(req,res,next,idParam);
 
-    let album;
-    try{
-        album = await Album.findById(idParam).exec();
-    }catch(err){
-        return next(new HttpError("Not found", 400))
-    }
-
-    if (album){
-        await album.remove();
-        res.status(StatusCodes.OK).json({
-            message: ReasonPhrases.OK,
-            data: "Deleted!!",
-        });
-    }else{
-        res.status(StatusCodes.NOT_FOUND).json({
-            message: ReasonPhrases.NOT_FOUND
-        });
-    }
 }
 
-const deleteAlbums = async (req, res, next) => { //delete all albums or album by id
+const deleteAlbum2 = async (req, res = response, next) => { //delete an album by id
 
-    let idParam = req.query.id;
+    const idParam = req.query.id;
+    await deleteAnAlbum(req,res,next,idParam);
 
-    if(idParam){
-        let album;
-        try{
-            album = await Album.findById(idParam).exec();
-        }catch(err){
-            return next(new HttpError("Not found", 400))
-        }
+}
 
-        if (album){
-            await album.remove();
-            res.status(StatusCodes.OK).json({
-                message: ReasonPhrases.OK,
-                data: "Deleted!!",
-            });
-        }else{
-            res.status(StatusCodes.NOT_FOUND).json({
+const deleteAnAlbum = async (req, res = response, next, idParam) => { 
+
+    const uid = req.uid;
+
+    try{
+
+        const alb = await Album.findById(idParam);
+
+        if(!alb){
+            return res.status(StatusCodes.NOT_FOUND).json({
                 message: ReasonPhrases.NOT_FOUND
             });
         }
-    }else{
-        let result;
-        try{
-            result = await Album.deleteMany({}).exec();
-        }catch(err){
-            return next(new HttpError("Not found", 400))
+
+        if(alb.userId.toString() !== uid){
+            return res.status(401).json({
+                ok: false,
+                msg: "You don't have permission to delete this album",
+            });
         }
-        res.json(result);
+
+        await Album.findByIdAndDelete(idParam);
+
+        res.status(StatusCodes.OK).json({
+            message: ReasonPhrases.OK,
+            data: "Album deleted",
+        });
+
+    }catch(err){
+        return next(new HttpError("Not found", 400))
     }
     
 }
 
 exports.addAlbum = addAlbum;
 exports.getAlbums = getAlbums;
-exports.getAlbumsByTitle = getAlbumsByTitle;
+exports.getAlbumsByName = getAlbumsByName;
 exports.getAlbum = getAlbum;
 exports.updateAlbum = updateAlbum;
 exports.updateAlbum2 = updateAlbum2;
 exports.deleteAlbum = deleteAlbum;
-exports.deleteAlbums = deleteAlbums;
+exports.deleteAlbum2 = deleteAlbum2;

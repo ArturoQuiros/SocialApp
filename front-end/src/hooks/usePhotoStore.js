@@ -1,61 +1,193 @@
 import { useSelector, useDispatch } from "react-redux"
 import Swal from "sweetalert2";
 import mainApi from "../api/mainApi";
-import { onLoadPhotos, onSearchPhotos, onSetActivePhoto } from "../store/app/photoSlice";
+import { fileUpload } from "../helpers/fileUpload";
+import { deletingPhoto, onAddNewPhoto, onClearPhotos, onDeleteAllPhotosOfAlbum, onDeletePhoto, onLoadPhotos, onSearchPhotos, onSetActivePhoto, onUpdatePhoto, photoSlice, savingNewPhoto } from "../store/app/photoSlice";
+
+
 
 export const usePhotoStore = () => {
 
     const dispatch = useDispatch();
   
-    const {photos, activePhoto} = useSelector(state => state.photos);
+    const {photos, activePhoto, isSaving, isDeleting} = useSelector(state => state.photos);
+    const {activeAlbum} = useSelector(state => state.albums);
     const {user} = useSelector(state => state.auth);
 
     const setActivePhoto = (photo) => {
         dispatch(onSetActivePhoto(photo));
     }
 
-    // const startSavingEvent = async(calendarEvent) => {
+    const startUploadingFile = async (files = []) => {
 
-    //     try {
+        //console.log(files);
 
-    //         if (calendarEvent.id){ //Update
-    //             await mainApi.put(`/events/${calendarEvent.id}`, calendarEvent);
-    //             dispatch(onUpdateEvent({...calendarEvent, user}));
-    //             return;
-    //         }
+        dispatch(savingNewPhoto());
+    
+        return await fileUpload(files[0]);
+    
+    }
 
-    //         //Create
-    //         const {data} = await mainApi.post('/events', calendarEvent);
-    //         dispatch(onAddNewEvent({...calendarEvent, id: data.evento.id, user}));
+    const startSavingPhoto = async(photo) => {
+
+        try {
+
+            if (photo.id){ //Update
+                await mainApi.put(`/photos/${photo.id}`, photo);
+                dispatch(onUpdatePhoto({...photo}));
+                Swal.fire('Photo updated!', 'The photo was updated successfully!', 'success');
+                return;
+            }
+
+            //Create
+            if(activeAlbum){
+                photo.albumId = activeAlbum.id;
+            }else{
+                photo.albumId = localStorage.getItem('activeAlbum');
+            }
+            //console.log(photo);
+            const {data} = await mainApi.post('/photos', photo);
+            dispatch(onAddNewPhoto({...photo, id: data.data.id}));
+            Swal.fire('Photo uploaded!', 'The photo was uploaded successfully!', 'success');
             
-    //     } catch (error) {
-    //         //console.log(error);
-    //         Swal.fire('Error al guardar', error.response.data?.msg, 'error');
-    //     }
+        } catch (error) {
+            console.log(error);
+            Swal.fire('Error while saving photo', error.response, 'error');
+        }
         
-    // }
+    }
 
-    // const startDeletingEvent = async() => {
+    const startUploadingFiles = async (files = []) => {
 
-    //     try {
+        //console.log(files);
 
-    //         await mainApi.delete(`/events/${activeAlbum.id}`);
+        dispatch(savingNewPhoto());
 
-    //         dispatch(onDeleteEvent());
+        const fileUploadPromises = [];
+        for (const file of files) {
+            fileUploadPromises.push(fileUpload(file));
+        }
+
+        const photosURLs = await Promise.all(fileUploadPromises);
+    
+        return photosURLs;
+    
+    }
+
+    const startSavingPhotos = async(files = []) => {
+
+        try {
+
+            const photosURLs = await startUploadingFiles(files);
+            const newPhotos = [];
+            let albumId = '';
+
+            if(activeAlbum){
+                albumId = activeAlbum.id;
+            }else{
+                albumId = localStorage.getItem('activeAlbum');
+            }
+
+            let x = 0;
+            let name = '';
+            photosURLs.forEach(url => {
+                x = Math.floor(Math.random() * (Math.floor(9999999999) - Math.ceil(999999999) + 1) + Math.ceil(999999999));
+                name = '' + x;
+                newPhotos.push({albumId, url, name});
+            })
+
+            const filePromises = [];
+            newPhotos.forEach(photo => {
+                filePromises.push(mainApi.post('/photos', photo));
+            })
+
+            await Promise.all(filePromises);
             
-    //     } catch (error) {
-    //         //console.log(error);
-    //         Swal.fire('Error al eliminar', error.response.data?.msg, 'error');
-    //     }
+            const {data} = await mainApi.get(`/photos?albumId=${albumId}`);
+            dispatch(onSearchPhotos(data.data));
+
+            Swal.fire('Photos uploaded!', 'The photos were uploaded successfully!', 'success');
+            
+        } catch (error) {
+            console.log(error);
+            Swal.fire('Error while saving photo', error.response, 'error');
+        }
         
-    // }
+    }
+
+    const startDeletingPhoto = async(photo) => {
+
+        try {
+
+            dispatch(deletingPhoto());
+
+            const segments = photo.url.split('/');
+            const imageName = segments[segments.length-1];
+            const segments2 = imageName.split('.');
+            const imageId = segments2[0];
+
+            await mainApi.delete(`/photos/${photo.id}/${imageId}`);
+
+            dispatch(onDeletePhoto());
+
+            Swal.fire('Photo deleted!', 'The photo was deleted successfully!', 'success');
+            
+        } catch (error) {
+            console.log(error);
+            Swal.fire('Error while deleting photo', error, 'error');
+        }
+        
+    }
+
+    const startDeletingAllPhotosOfAlbum = async() => {
+
+        try {
+
+            dispatch(deletingPhoto());
+
+            let mongoIds = '';
+            let cloudinaryIds = '';
+
+            let segments = '';
+            let imageName = '';
+            let segments2 = '';
+            let imageId = '';
+
+            photos.forEach(photo => {
+                mongoIds += photo.id + ',';
+
+                segments = photo.url.split('/');
+                imageName = segments[segments.length-1];
+                segments2 = imageName.split('.');
+                imageId = segments2[0];
+
+                cloudinaryIds += 'social-app/' + imageId + ',';
+            })
+
+            mongoIds = mongoIds.slice(0, -1);
+            cloudinaryIds = cloudinaryIds.slice(0, -1);
+
+            await mainApi.delete(`/photos/deleteMultiple?mIds=${mongoIds}&cIds=${cloudinaryIds}`);
+
+            dispatch(onDeleteAllPhotosOfAlbum());
+
+            Swal.fire('Photos deleted!', 'The photos were deleted successfully!', 'success');
+            
+        } catch (error) {
+            console.log(error);
+            Swal.fire('Error while deleting photos', error, 'error');
+        }
+        
+    }
 
     const startLoadingPhotos = async (id) => {
         try {
+
+            dispatch(onClearPhotos());
             
             const {data} = await mainApi.get(`/photos?albumId=${id}`);
 
-            dispatch(onLoadPhotos(data));
+            dispatch(onLoadPhotos(data.data));
 
         } catch (error) {
             console.log(error);
@@ -65,19 +197,22 @@ export const usePhotoStore = () => {
     const startSearchingPhotos = async (id, value) => {
         try {
 
-            const {data} = await mainApi.get(`/photos?albumId=${id}`);
-
             if (value === "") {
-                dispatch(onSearchPhotos(data));
-            }else{
-                const search = data.filter((photo) => photo.title.includes(value));
 
-                if(search[0]){
-                    dispatch(onSearchPhotos(search));
+                const {data} = await mainApi.get(`/photos?albumId=${id}`);
+                dispatch(onSearchPhotos(data.data));
+
+            }else{
+
+                try {
+                    const {data} = await mainApi.get(`/photos?s=${value}&albumId=${id}`);
+
+                    dispatch(onSearchPhotos(data.data));
                     return false;
-                }else{
+                } catch (error) {
                     return true;
                 }
+
             }
 
         } catch (error) {
@@ -87,13 +222,18 @@ export const usePhotoStore = () => {
 
     return {
         photos: photos,
+        isSaving: isSaving,
+        isDeleting: isDeleting,
         activePhoto: activePhoto,
         hasPhotoSelected: !!activePhoto, //null = false, object = true
         setActivePhoto,
-        //startSavingEvent,
-        //startDeletingEvent,
+        startUploadingFile,
+        startSavingPhoto,
+        startDeletingPhoto,
         startLoadingPhotos,
         startSearchingPhotos,
+        startDeletingAllPhotosOfAlbum,
+        startSavingPhotos,
     }
 
 }

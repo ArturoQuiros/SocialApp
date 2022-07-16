@@ -11,13 +11,6 @@ const loginFormFields = {
     loginPassword: '',
 }
 
-const registerFormFields = {
-    registerName: '',
-    registerEmail: '',
-    registerPassword: '',
-    registerPassword2: '',
-}
-
 export const LoginPage = () => {
 
     const {startLogin, errorMessage} = useAuthStore();
@@ -45,10 +38,10 @@ export const LoginPage = () => {
             <form onSubmit={onSubmit} className="animate__animated animate__fadeIn animate__faster">
                 <Grid container>
                     <Grid item xs={12} sx={{mt: 2}}>
-                        <TextField label="Username or Email" type="text" placeholder="Your username or email" fullWidth name="loginEmail" value={loginEmail} onChange={onLoginInputChange} />
+                        <TextField variant="filled" label="Email" type="text" placeholder="Your email" fullWidth name="loginEmail" value={loginEmail} onChange={onLoginInputChange} />
                     </Grid>
                     <Grid item xs={12} sx={{mt: 2}}>
-                        <TextField label="Password" type="password" placeholder="Your password" fullWidth name="loginPassword" value={loginPassword} onChange={onLoginInputChange}/>
+                        <TextField variant="filled" label="Password" type="password" placeholder="Your password" fullWidth name="loginPassword" value={loginPassword} onChange={onLoginInputChange}/>
                     </Grid>
                     <Grid item xs={12} sx={{mt: 2}} display={!!errorMessage ? '' : 'none'}>
                         <Alert severity='error'>{errorMessage}</Alert>
@@ -61,12 +54,12 @@ export const LoginPage = () => {
                         </Grid>
                     </Grid>
 
-                    {/* <Grid container direction="row" justifyContent="end">
-                        <Link component={RouterLink} color="inherit" to="/auth/register">
+                    <Grid container direction="row" justifyContent="end">
+                        <Link component={RouterLink} color="inherit" to="/auth/signup">
                             Create an account
                         </Link>
                         
-                    </Grid> */}
+                    </Grid>
                 </Grid>
             </form>
 

@@ -11,26 +11,26 @@ export const albumSlice = createSlice({
         onSetActiveAlbum: (state, {payload} ) => {
             state.activeAlbum = payload;
         },
-        // onAddNewEvent: (state, {payload} ) => {
-        //     state.events.push(payload);
-        //     state.activeEvent = null;
-        // },
-        // onUpdateEvent: (state, {payload} ) => {
-        //     state.events = state.events.map( event => {
+        onAddNewAlbum: (state, {payload} ) => {
+            state.albums.push(payload);
+            state.activeAlbum = null;
+        },
+        onUpdateAlbum: (state, {payload} ) => {
+            state.albums = state.albums.map( album => {
 
-        //         if(event.id === payload.id){
-        //             return payload;
-        //         }
+                if(album.id === payload.id){
+                    return payload;
+                }
 
-        //         return event;
-        //     });
-        // },
-        // onDeleteEvent: (state) => {
-        //     if (state.activeEvent){
-        //         state.events = state.events.filter(event => event.id !== state.activeEvent.id);
-        //         state.activeEvent = null;
-        //     }
-        // },
+                return album;
+            });
+        },
+        onDeleteAlbum: (state) => {
+            if (state.activeAlbum){
+                state.albums = state.albums.filter(album => album.id !== state.activeAlbum.id);
+                state.activeAlbum = null;
+            }
+        },
         onLoadAlbums: (state, {payload = []} ) => {
             state.isLoadingAlbums = false;
             //state.albums = payload;
@@ -53,4 +53,4 @@ export const albumSlice = createSlice({
     }
 });
 
-export const { onSetActiveAlbum, onLoadAlbums, onSearchAlbums, onLogoutAlbums } = albumSlice.actions;
+export const { onSetActiveAlbum, onLoadAlbums, onSearchAlbums, onLogoutAlbums, onAddNewAlbum, onUpdateAlbum, onDeleteAlbum } = albumSlice.actions;
