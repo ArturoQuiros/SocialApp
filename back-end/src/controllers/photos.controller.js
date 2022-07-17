@@ -303,7 +303,7 @@ const deletePhotos = async (req, res = response, next) => {
         const cloudResp = await cloudinary.api.delete_resources(cIdsA, {
             resource_type: 'image'
         })
-        console.log(cloudResp);
+        //console.log(cloudResp);
 
         res.status(StatusCodes.OK).json({
             message: ReasonPhrases.OK,
