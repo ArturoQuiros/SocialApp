@@ -162,7 +162,7 @@ export const HomePage = () => {
             {
               name: 'Album Chart',
               type: 'pie',
-              radius: '50%', //[50, 250]
+              radius: [20, 100], 
               center: ['50%', '50%'],
               roseType: 'area',
               itemStyle: {
@@ -188,8 +188,8 @@ export const HomePage = () => {
               <h2 className="px-6 py-0 text-lg text-center font-bold text-slate-900 ">Number of albums: {albumCount}</h2>
               <h2 className="px-6 py-0 text-lg text-center font-bold text-slate-900 mb-4">Number of Photos: {photoCount}</h2>
               <div className="flex flex-wrap gap-2">
-                <ReactECharts option={options5} style={{height: "50vh", width: "100%"}} className=""/>
                 <ReactECharts option={options4} style={{height: "50vh", width: "100%"}} className=""/>
+                <ReactECharts option={options5} style={{height: "50vh", width: "100%"}} className=""/>
               </div>
               <ReactECharts option={options} style={{height: "50vh", width: "100%"}} className="mb-10"/>
               <ReactECharts option={options2} style={{height: "50vh", width: "100%"}} className="mb-10"/>

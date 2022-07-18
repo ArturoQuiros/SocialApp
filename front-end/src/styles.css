@@ -90,6 +90,21 @@ body {
 
 
 
+/* hide scrollbar but allow scrolling */
+#scrollContent {
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  scrollbar-width: none; /* for Firefox */
+  overflow-y: scroll; 
+}
+
+#scrollContent::-webkit-scrollbar {
+  display: none; /* for Chrome, Safari, and Opera */
+}
+
+
+
+
+
 
 @media only screen and (max-width: 1800px) {
   #photo_container {

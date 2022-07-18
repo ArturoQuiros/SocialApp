@@ -10,6 +10,8 @@ import { Button, Spinner } from "flowbite-react/lib/cjs/index.js";
 
 export const PhotosPage = () => {
 
+    const listInnerRef = useRef();
+
     const [showNoResults, setNoResults] = useState(false);
     const {openModal} = useUiStore();
     const {user} = useAuthStore();
@@ -72,8 +74,21 @@ export const PhotosPage = () => {
           if (max + 20 >= photos.length) {
             setShowMore(false);
           }
+          if (max <= photos.length){
+            setMax(max + 20);
+          }
         }
-        setMax(max + 20);
+    };
+
+    const onScroll = () => {
+      //console.log("reached bottom");
+      if (listInnerRef.current) {
+        const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current;
+        if (scrollTop + clientHeight === scrollHeight) {
+          //console.log("reached bottom");
+          loadMore();
+        }
+      }
     };
 
     
@@ -114,7 +129,11 @@ export const PhotosPage = () => {
           </p>
         ) : null}
 
-          <div className="container px-5 py-0 mx-auto lg:pt-3 lg:px-32">
+          <div className="container px-5 py-0 mx-auto lg:pt-3 lg:px-32"
+            id="scrollContent"
+            onScroll={onScroll}
+            ref={listInnerRef}
+            style={{ height: "80vh", overflowY: "scroll" }}>
             <div className="flex flex-wrap -m-1 md:-m-2">
               {photos.slice(min, max).map((photo) => (
                 <div key={photo.id} id="photo_container" className="flex flex-wrap w-1/5 items-stretch">
