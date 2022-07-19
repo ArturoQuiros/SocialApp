@@ -147,7 +147,7 @@ export const PhotosPage = () => {
                   <div className="w-full h-fit m-0">
                     <img
                       className="thumbnail block object-cover object-center w-full h-full "
-                      src={photo.url}
+                      src={photo.thumbnail}
                       width="100%"
                       height="100%"
                     ></img>

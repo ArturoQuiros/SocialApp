@@ -148,4 +148,19 @@
     "$oid": "62d0dacf7d5837e7dd50c3d8"
   },
   "__v": 0
+},{
+  "_id": {
+    "$oid": "62d4bed127ccc4d344a1e0a8"
+  },
+  "name": "Doom Patrol",
+  "description": "Some amazing photos of Doom Patrol",
+  "date": {
+    "$date": {
+      "$numberLong": "1658109640005"
+    }
+  },
+  "userId": {
+    "$oid": "62d0dacf7d5837e7dd50c3d8"
+  },
+  "__v": 0
 }]
