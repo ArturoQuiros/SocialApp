@@ -153,28 +153,48 @@ export const usePhotoStore = () => {
             let segments2 = '';
             let imageId = '';
 
+            let cont = 0;
             photos.forEach(photo => {
-                mongoIds += photo.id + ',';
+                cont++;
 
                 segments = photo.url.split('/');
                 imageName = segments[segments.length-1];
                 segments2 = imageName.split('.');
                 imageId = segments2[0];
 
-                cloudinaryIds += 'social-app/' + imageId + ',';
+                if(cont % 50 === 0){ //borrar en grupos de 50
+                    mongoIds += photo.id + ',.';
+                    cloudinaryIds += 'social-app/' + imageId + ',.';
+                }else{
+                    mongoIds += photo.id + ',';
+                    cloudinaryIds += 'social-app/' + imageId + ',';
+                }
+                
             })
 
-            mongoIds = mongoIds.slice(0, -1);
-            cloudinaryIds = cloudinaryIds.slice(0, -1);
+            if(mongoIds.charAt(mongoIds.length - 1) === '.'){
+                mongoIds = mongoIds.slice(0, -1);
+                cloudinaryIds = cloudinaryIds.slice(0, -1);
+            }
 
-            await mainApi.delete(`/photos/deleteMultiple?mIds=${mongoIds}&cIds=${cloudinaryIds}`);
+            let segmentsM = mongoIds.split('.');
+            let segmentsC = cloudinaryIds.split('.');
+
+            const filePromises = [];
+            for (let i = 0; i < segmentsM.length; i++) {
+                segmentsM[i] = segmentsM[i].slice(0, -1);
+                segmentsC[i] = segmentsC[i].slice(0, -1);
+                filePromises.push(mainApi.delete(`/photos/deleteMultiple?mIds=${segmentsM[i]}&cIds=${segmentsC[i]}`));
+            }
+
+            await Promise.all(filePromises);
 
             dispatch(onDeleteAllPhotosOfAlbum());
 
             Swal.fire('Photos deleted!', 'The photos were deleted successfully!', 'success');
             
         } catch (error) {
-            //console.log(error);
+            console.log(error);
             Swal.fire('Error while deleting photos', error, 'error');
         }
         

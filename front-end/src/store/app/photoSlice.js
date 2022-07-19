@@ -20,6 +20,10 @@ export const photoSlice = createSlice({
             state.activePhoto = payload;
         },
         onAddNewPhoto: (state, {payload} ) => {
+
+            const segments = payload.url.split('upload');
+            payload.thumbnail = segments[0] + "upload/c_fill,h_300,w_300" + segments[1];
+
             state.photos.push(payload);
             state.activePhoto = null;
             state.isSaving = false;
@@ -53,6 +57,12 @@ export const photoSlice = createSlice({
             state.isLoadingPhotos = false;
             //state.photos = payload;
             state.photos = [];
+
+            payload.forEach(photo => {
+                const segments = photo.url.split('upload');
+                photo.thumbnail = segments[0] + "upload/c_fill,h_300,w_300" + segments[1];
+            });
+
             payload.forEach(photo => {
                 const exists = state.photos.some(dbPhoto => dbPhoto.id === photo.id);
                 if (!exists){
@@ -63,6 +73,12 @@ export const photoSlice = createSlice({
         },
         onSearchPhotos: (state, {payload = []} ) => {
             state.isLoadingPhotos = false;
+
+            payload.forEach(photo => {
+                const segments = photo.url.split('upload');
+                photo.thumbnail = segments[0] + "upload/c_fill,h_300,w_300" + segments[1];
+            });
+
             state.photos = payload;
             state.isSaving = false;
         },
