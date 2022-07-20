@@ -17,8 +17,8 @@ export const useAuthStore = () => {
         
             const {data} = await mainApi.post('/users/login', {email, password});
 
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('token-init-date', new Date().getTime());
+            // localStorage.setItem('token', data.token);
+            // localStorage.setItem('token-init-date', new Date().getTime());
 
             dispatch(onLogin({firstName: data.firstName, 
                             lastName: data.lastName, 
@@ -42,8 +42,8 @@ export const useAuthStore = () => {
             
             const {data} = await mainApi.post('/users/signup', {firstName, lastName, email, password, birthDate, gender});
 
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('token-init-date', new Date().getTime());
+            // localStorage.setItem('token', data.token);
+            // localStorage.setItem('token-init-date', new Date().getTime());
 
             dispatch(onLogin({firstName: data.firstName, 
                 lastName: data.lastName, 
@@ -63,16 +63,12 @@ export const useAuthStore = () => {
 
     const checkAuthToken = async() => {
 
-        const token = localStorage.getItem('token');
-
-        if (!token) return dispatch(onLogout());
-
         try { //Si no ha expirado el token, crea otro
 
             const {data} = await mainApi.get('/users/renew');
             
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('token-init-date', new Date().getTime());
+            // localStorage.setItem('token', data.token);
+            // localStorage.setItem('token-init-date', new Date().getTime());
 
             dispatch(onLogin({firstName: data.firstName, 
                 lastName: data.lastName, 
@@ -82,13 +78,18 @@ export const useAuthStore = () => {
                 uid: data.uid}));
             
         } catch (error) { //Si ya expiro el token, cierra sesion
-            localStorage.clear();
             dispatch(onLogout());
         }
     }
 
-    const startLogout = () => {
-        localStorage.clear();
+    const startLogout = async () => {
+        try { 
+
+            const {data} = await mainApi.get('/users/logout');
+            
+        } catch (error) { 
+            
+        }
         dispatch(onLogoutAlbums());
         dispatch(onLogoutPhotos());
         dispatch(onLogoutStats());

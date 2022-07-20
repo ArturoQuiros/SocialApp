@@ -28,18 +28,23 @@ const addUser = async (req, res = response, next) => { //add a user
         await usuario.save();
 
         const token = await generarJWT(usuario.id, usuario.firstName, usuario.lastName, usuario.email, usuario.birthDate, usuario.gender);
-    
-        res.status(201).json({
+
+        return res
+        .cookie("token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+        })
+        .status(200)
+        .json({
             ok: true,
             uid: usuario.id,
             firstName: usuario.firstName,
             lastName: usuario.lastName,
             email: usuario.email,
             birthDate: usuario.birthDate,
-            gender: usuario.gender,
-            token
+            gender: usuario.gender
         });
-
+    
     }catch(error){
         console.log(error);
         res.status(500).json({
@@ -76,15 +81,20 @@ const login = async (req, res = response, next) => {//login
 
         const token = await generarJWT(usuario.id, usuario.firstName, usuario.lastName, usuario.email, usuario.birthDate, usuario.gender);
 
-        res.json({
+        return res
+        .cookie("token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+        })
+        .status(200)
+        .json({
             ok: true,
             uid: usuario.id,
             firstName: usuario.firstName,
             lastName: usuario.lastName,
             email: usuario.email,
             birthDate: usuario.birthDate,
-            gender: usuario.gender,
-            token
+            gender: usuario.gender
         });
 
     }catch(error){
@@ -103,16 +113,31 @@ const revalidateToken = async (req, res = response) => {
 
     const token = await generarJWT(uid, firstName, lastName, email, birthDate, gender);
 
-    res.json({
-        ok: true,
-        uid,
-        firstName,
-        lastName, 
-        email, 
-        birthDate, 
-        gender,
-        token
-    });
+    return res
+        .cookie("token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+        })
+        .status(200)
+        .json({
+            ok: true,
+            uid,
+            firstName,
+            lastName, 
+            email, 
+            birthDate, 
+            gender
+        });
+
+}
+
+const logout = async (req, res = response, next) => {
+
+    return res
+    .clearCookie("token")
+    .status(200)
+    .json({ message: "Successfully logged out" });
+
 }
 
 const checkPassword = async (req, res = response, next) => { //Check password by id
@@ -301,6 +326,7 @@ const deleteUsers = async (req, res = response, next) => { //delete all users
 exports.addUser = addUser;
 exports.login = login;
 exports.revalidateToken = revalidateToken;
+exports.logout = logout;
 exports.checkPassword = checkPassword;
 exports.checkPassword2 = checkPassword2;
 exports.updateUser = updateUser;

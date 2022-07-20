@@ -4,13 +4,14 @@ import { Provider } from "react-redux";
 import { store } from "./store/store";
 import { AppTheme } from "./theme/AppTheme"
 
+
 export const App = () => {
   return (
     <>
       <Provider store={store}>
         <BrowserRouter>
             <AppTheme>
-                <AppRouter />
+              <AppRouter />
             </AppTheme>
         </BrowserRouter>
       </Provider>

@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const HttpError = require('./models/http-error')
 const cors = require('cors');
+const cookieParser = require("cookie-parser");
 require('dotenv').config();
 
 const app = express();
@@ -18,11 +19,17 @@ const url = process.env.DB_CNN;
 // app.use(cors({
 //   origin: 'https://www.google.com'
 // }));
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:3000'],
+  credentials:true,
+  exposedHeaders: ["token"]
+}));
 
 app.use(express.static('public'));
 
 app.use(express.json());
+
+app.use(cookieParser());
 
 app.use("/api/users", usersRouter);
 app.use("/api/albums", albumsRouter);
