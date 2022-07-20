@@ -66,6 +66,7 @@ export const useAuthStore = () => {
         try { //Si no ha expirado el token, crea otro
 
             const {data} = await mainApi.get('/users/renew');
+            //console.log("renewed");
             
             // localStorage.setItem('token', data.token);
             // localStorage.setItem('token-init-date', new Date().getTime());
