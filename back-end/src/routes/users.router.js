@@ -33,6 +33,8 @@ router.get('/renew', validarJWT, usersController.revalidateToken);
 
 router.use(validarJWT); //Se aplica este middleware a las siguientes 5 rutas porque esta antes de las 5
 
+router.get('/logout', usersController.logout);
+
 router.get("/checkpassword/:id", 
     [
         check('password', 'Password must be at least 8 characters long').isLength({min: 8}),
