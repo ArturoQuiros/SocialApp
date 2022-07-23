@@ -7,6 +7,8 @@ import queryString from 'query-string';
 import { PhotoModal } from "../components/PhotoModal";
 import { SearchBar } from "../components/SearchBar";
 import { Button, Spinner } from "flowbite-react/lib/cjs/index.js";
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
 export const PhotosPage = () => {
 
@@ -91,6 +93,41 @@ export const PhotosPage = () => {
       }
     };
 
+    const onConfirmDeletePhoto = (photo) => {
+      
+      confirmAlert({
+        title: 'Are you sure you want to delete this photo?',
+        message: '',
+        buttons: [
+          {
+            label: 'Yes',
+            onClick: () => onDeletePhoto(photo)
+          },
+          {
+            label: 'No',
+          }
+        ]
+      });
+
+    }
+
+    const onConfirmDeletePhotos = () => {
+      
+      confirmAlert({
+        title: 'Are you sure you want to delete all photos in this album?',
+        message: '',
+        buttons: [
+          {
+            label: 'Yes',
+            onClick: () => onDeleteAllPhotos()
+          },
+          {
+            label: 'No',
+          }
+        ]
+      });
+
+    }
     
 
   return (
@@ -110,7 +147,7 @@ export const PhotosPage = () => {
             <Button color="warning" onClick={() => fileInputRef.current.click()} disabled={isSaving}>
               Upload multiple photos
             </Button>
-            <Button color="failure" onClick={() => onDeleteAllPhotos()} disabled={isDeleting}>
+            <Button color="failure" onClick={() => onConfirmDeletePhotos()} disabled={isDeleting}>
               Delete all photos
             </Button>
             </div>
@@ -164,7 +201,7 @@ export const PhotosPage = () => {
 
                     <button
                       type="button"
-                      onClick={() => onDeletePhoto(photo)}
+                      onClick={() => onConfirmDeletePhoto(photo)}
                 
                       className="w-full h-fit m-0 inline-block px-0 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out"
                     >

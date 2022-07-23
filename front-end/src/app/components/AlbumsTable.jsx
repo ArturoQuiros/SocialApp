@@ -2,6 +2,8 @@ import { Table, Button } from "flowbite-react/lib/cjs/index.js";
 import { Link } from "react-router-dom";
 import { useAlbumStore } from "../../hooks/useAlbumStore";
 import { useUiStore } from "../../hooks/useUiStore";
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
 export const AlbumTable = (props) => {
 
@@ -29,6 +31,24 @@ export const AlbumTable = (props) => {
     const onDeleteAlbum = (album) => {
         setActiveAlbum(album);
         startDeletingAlbum(album);
+    }
+
+    const onConfirmDeleteAlbum = (album) => {
+      
+      confirmAlert({
+        title: 'Are you sure you want to delete this album?',
+        message: '',
+        buttons: [
+          {
+            label: 'Yes',
+            onClick: () => onDeleteAlbum(album)
+          },
+          {
+            label: 'No',
+          }
+        ]
+      });
+
     }
 
   return (
@@ -63,7 +83,7 @@ export const AlbumTable = (props) => {
                 <Button gradientMonochrome="success" onClick={() => onEditAlbum(album)}>
                   Edit
                 </Button>
-                <Button gradientMonochrome="failure" onClick={() => onDeleteAlbum(album)}>
+                <Button gradientMonochrome="failure" onClick={() => onConfirmDeleteAlbum(album)}>
                   Delete
                 </Button>
               </div>
