@@ -15,15 +15,17 @@ const port = process.env.PORT;
 
 const url = process.env.DB_CNN;
 
-//Allow requests only from our front-end
-// app.use(cors({
-//   origin: 'https://www.google.com'
-// }));
 app.use(cors({
   origin: ['http://localhost:3000'],
   credentials:true,
   exposedHeaders: ["token"]
 }));
+
+// app.use(cors({
+//   origin: ['https://mern-photos-app.herokuapp.com'],
+//   credentials:true,
+//   exposedHeaders: ["token"]
+// }));
 
 app.use(express.static('public'));
 
@@ -36,7 +38,8 @@ app.use("/api/albums", albumsRouter);
 app.use("/api/photos", photosRouter);
 
 app.get('*', (req, res) => {
-  res.sendFile( __dirname + '/public/index.html');
+  //console.log(__dirname.substring(0, __dirname.length-4));
+  res.sendFile( __dirname.substring(0, __dirname.length-4) + '/public/index.html'); //sin /src
 })
 
 app.use((req, res) => {
