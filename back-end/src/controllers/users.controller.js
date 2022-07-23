@@ -33,8 +33,8 @@ const addUser = async (req, res = response, next) => { //add a user
         .cookie("token", token, {
           maxAge: 24*60*60*1000, //24h
           //sameSite: "none", //forces https
-          httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
+          httpOnly: process.env.NODE_ENV === "dev",
+          secure: process.env.NODE_ENV === "pro",
         })
         .status(200)
         .json({
@@ -87,8 +87,8 @@ const login = async (req, res = response, next) => {//login
         .cookie("token", token, {
           maxAge: 24*60*60*1000, //24h
           //sameSite: "none", //forces https
-          httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
+          httpOnly: process.env.NODE_ENV === "dev",
+          secure: process.env.NODE_ENV === "pro",
         })
         .status(200)
         .json({
@@ -121,8 +121,8 @@ const revalidateToken = async (req, res = response) => {
         .cookie("token", token, {
           maxAge: 24*60*60*1000, //24h
           //sameSite: "none", //forces https
-          httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
+          httpOnly: process.env.NODE_ENV === "dev",
+          secure: process.env.NODE_ENV === "pro",
         })
         .status(200)
         .json({
