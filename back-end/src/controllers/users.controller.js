@@ -4,6 +4,15 @@ const { generarJWT } = require('../helpers/jwt');
 const User = require("../models/users.model");
 const HttpError = require('../models/http-error')
 const { ReasonPhrases, StatusCodes } = require("http-status-codes")
+const nodemailer = require('nodemailer');
+const sendgridTransport = require('nodemailer-sendgrid-transport');
+const generator = require('generate-password');
+
+const transporter = nodemailer.createTransport(sendgridTransport({
+    auth: {
+        api_key: process.env.SENDGRID_API_KEY
+    }
+}))
 
 const addUser = async (req, res = response, next) => { //add a user
 
@@ -111,6 +120,70 @@ const login = async (req, res = response, next) => {//login
 
 }
 
+const forgotPassword = async (req, res = response, next) => {//forgot password
+
+    const { email } = req.body;
+
+    try{
+
+        const usuario = await User.findOne({email});
+
+        if (!usuario){
+            return res.status(400).json({
+                ok: false,
+                msg: 'Invalid credentials',
+            });
+        }
+
+        const newPassword = generator.generate({
+            length: 16,
+            numbers: true
+        });
+
+        const salt = bcrypt.genSaltSync();
+        const newPass = bcrypt.hashSync(newPassword, salt);
+
+        const user = await User.findByIdAndUpdate(
+            usuario.id,
+            { password: newPass, },
+            {
+                new: true,
+            }
+            ).exec();
+
+        transporter.sendMail({
+            to: email,
+            from: 'jrivasg@est.utn.ac.cr', //Registered mail
+            subject: 'Here is your new password',
+            html: `<h1>You can now login to your account with this password: ${newPassword}</h1>`
+        })
+        .then(response =>{
+            //console.log("response:", response);
+
+            res.status(StatusCodes.OK).json({
+                message: ReasonPhrases.OK,
+                data: "New password sent to email",
+            });
+
+        })
+        .catch(err=>{
+            console.log(err);
+            return res.status(500).json({
+                ok: false,
+                msg: 'Error while sending new password',
+            });
+        })
+
+    }catch(error){
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Please talk to the admin',
+        });
+    }
+
+}
+
 const revalidateToken = async (req, res = response) => {
 
     const {uid, firstName, lastName, email, birthDate, gender} = req;
@@ -162,7 +235,7 @@ const checkPassword2 = async (req, res = response, next) => { //Check password b
 
 const checkAPassword = async (req, res = response, next, idParam) => {//Check password
 
-    const { password } = req.body;
+    const { oldPassword } = req.body;
 
     try{
 
@@ -175,7 +248,7 @@ const checkAPassword = async (req, res = response, next, idParam) => {//Check pa
             });
         }
 
-        const validPassword = bcrypt.compareSync(password, usuario.password);
+        const validPassword = bcrypt.compareSync(oldPassword, usuario.password);
 
         if (!validPassword) {
             return res.status(400).json({
@@ -291,7 +364,7 @@ const updateAUserPassword = async (req, res = response, next, idParam) => {
     
     if (oldUser){
 
-        const pass = req.body.password;
+        const pass = req.body.newPassword;
 
         const salt = bcrypt.genSaltSync();
         const password = bcrypt.hashSync(pass, salt);
@@ -331,6 +404,7 @@ const deleteUsers = async (req, res = response, next) => { //delete all users
 
 exports.addUser = addUser;
 exports.login = login;
+exports.forgotPassword = forgotPassword;
 exports.revalidateToken = revalidateToken;
 exports.logout = logout;
 exports.checkPassword = checkPassword;

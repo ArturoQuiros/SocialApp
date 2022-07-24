@@ -32,7 +32,7 @@ export const AlbumsPage = () => {
 
       {albums[0] ? (
 
-        <div>
+        <div className="border-2 rounded-lg mt-4">
 
           <SearchBar
             id={1}
@@ -55,7 +55,7 @@ export const AlbumsPage = () => {
 
           <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="py-2 inline-block min-w-[75%] sm:px-6 lg:px-8">
-              <div className="overflow-hidden">
+              <div className="overflow-hidden mb-4">
                 <AlbumTable albums={albums} />
               </div>
             </div>

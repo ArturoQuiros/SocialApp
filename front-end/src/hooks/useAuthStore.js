@@ -1,9 +1,10 @@
 import { useSelector, useDispatch } from "react-redux"
 import mainApi from "../api/mainApi";
+import Swal from "sweetalert2";
 import { onLogoutAlbums } from "../store/app/albumSlice";
 import { onLogoutPhotos } from "../store/app/photoSlice";
 import { onLogoutStats } from "../store/app/statsSlice";
-import { clearErrorMessage, onChecking, onLogin, onLogout } from "../store/auth/authSlice";
+import { clearErrorMessage, onChecking, onLogin, onLogout, onUpdateUser } from "../store/auth/authSlice";
 
 export const useAuthStore = () => {
   
@@ -97,6 +98,59 @@ export const useAuthStore = () => {
         dispatch(onLogout());
     }
 
+    const startUpdatingUser = async(newUser) => {
+
+        try {
+
+            await mainApi.put(`/users/${user.uid}`, newUser);
+            dispatch(onUpdateUser({...newUser, uid: user.uid}));
+            Swal.fire('User updated!', 'The user was updated successfully!', 'success');
+            return;
+            
+        } catch (error) {
+            //console.log(error);
+            Swal.fire('Error while updating user', error.response, 'error');
+        }
+        
+    }
+
+    const startUpdatingPassword = async(oldPassword, newPassword) => {
+
+        try {
+
+            try {
+                await mainApi.post(`/users/checkpassword/${user.uid}`, {oldPassword});
+            } catch (error) {
+                //console.log(error);
+                Swal.fire('Error while updating user password', 'Old password is invalid', 'error');
+                return false;
+            }
+ 
+            await mainApi.put(`/users/password/${user.uid}`, {newPassword});
+            Swal.fire('User password updated!', 'The password was updated successfully!', 'success');
+            return true;
+            
+        } catch (error) {
+            //console.log(error);
+            Swal.fire('Error while updating user password', error.response, 'error');
+            return false;
+        }
+        
+    }
+
+    const startForgotPassword = async (email) => {
+        try {
+        
+            const {data} = await mainApi.post('/users/forgotpassword', {email});
+
+            Swal.fire('New password sent!', 'Your new password was sent to your email successfully!', 'success');
+
+        } catch (error) {
+            //console.log(error);
+            Swal.fire('Error while sending new user password', error.response, 'error');
+        }
+    }
+
     return {
         status, 
         user, 
@@ -105,6 +159,9 @@ export const useAuthStore = () => {
         startSignUp,
         checkAuthToken,
         startLogout,
+        startUpdatingUser,
+        startUpdatingPassword,
+        startForgotPassword
     }
 
 }

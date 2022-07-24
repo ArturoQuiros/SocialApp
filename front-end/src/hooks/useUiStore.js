@@ -16,7 +16,7 @@ export const useUiStore = () => {
     }
 
     const toggleModal = () => {
-        (isModalOpen) ? openModal() : closeModal();
+        (isModalOpen) ? closeModal() : openModal();
     }
 
     return {

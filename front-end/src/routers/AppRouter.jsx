@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+import { ForgotPasswordPage } from "../auth/pages/ForgotPasswordPage";
 import { LoginPage } from "../auth/pages/LoginPage";
 import { SignUpPage } from "../auth/pages/SignUpPage";
 import { useAuthStore } from "../hooks/useAuthStore";
@@ -29,6 +30,7 @@ export const AppRouter = () => {
               <>
                 <Route path="/auth/login" element={<LoginPage />} />
                 <Route path="/auth/signup" element={<SignUpPage />} />
+                <Route path="/auth/forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="/*" element={<Navigate to='/auth/login' />} />
               </>
             ) : (

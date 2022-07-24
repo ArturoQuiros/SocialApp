@@ -54,12 +54,24 @@ export const LoginPage = () => {
                         </Grid>
                     </Grid>
 
-                    <Grid container direction="row" justifyContent="end">
-                        <Link component={RouterLink} color="inherit" to="/auth/signup">
-                            Create an account
-                        </Link>
-                        
+                    <Grid container spacing={0} sx={{mb: 0, mt: 0}}>
+                        <Grid item xs={12} sm={6}>
+                            <Grid container direction="row" justifyContent="start">
+                                <Link component={RouterLink} color="inherit" to="/auth/forgot-password">
+                                    Forgot your password?
+                                </Link>
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <Grid container direction="row" justifyContent="end">
+                                <Link component={RouterLink} color="inherit" to="/auth/signup">
+                                    Create an account
+                                </Link>
+                            </Grid>
+                        </Grid>
                     </Grid>
+
+                    
                 </Grid>
             </form>
 

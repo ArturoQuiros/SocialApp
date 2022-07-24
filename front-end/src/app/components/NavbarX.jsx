@@ -26,7 +26,14 @@ export const NavbarX = () => {
             {user.firstName}{" "}{user.lastName}
           </span>
         </Dropdown.Header>
-        <Dropdown.Item><a className="py-4 px-4">Settings</a></Dropdown.Item>
+        <Dropdown.Item>
+          <NavLink 
+              className="py-4 px-4"
+              to="/settings"
+          >
+              Settings
+          </NavLink>
+        </Dropdown.Item>
         <Dropdown.Divider />
         <Dropdown.Item>
           <a className="py-4 px-4" onClick={startLogout}>Log out</a>
@@ -54,15 +61,15 @@ export const NavbarX = () => {
 
           <NavLink 
               className={({isActive}) => `${isActive ? 'text-violet-900 font-bold' : ''}`} 
-              to="/"
-          >
-              Home
-          </NavLink>
-          <NavLink 
-              className={({isActive}) => ` ${isActive ? 'text-violet-900 font-bold' : ''}`} 
               to="/albums"
           >
               Albums
+          </NavLink>
+          <NavLink 
+              className={({isActive}) => ` ${isActive ? 'text-violet-900 font-bold' : ''}`} 
+              to="/stats"
+          >
+              Stats
           </NavLink>
         </Navbar.Collapse>
       </Navbar>

@@ -1,4 +1,5 @@
 import { Grid, Typography} from "@mui/material"
+import logo from '../../favicon.svg' // relative path to image 
 
 export const AuthLayout = ({children, title = ''}) => {
   return (
@@ -10,6 +11,12 @@ export const AuthLayout = ({children, title = ''}) => {
         justifyContent="center"
         sx={{minHeight: '100vh', backgroundColor: 'primary.main', padding: 4}}
     >
+
+          <img
+            src={logo}
+            className="m-4 h-14"
+            alt="Social App Logo"
+          />
 
         <Grid item
          className="box-shadow"
