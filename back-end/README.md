@@ -8,8 +8,10 @@
 2. Make the necessary changes to the environment variables
 
 ```
-PORT=xxx
-DB_CNN=xxx
-SECRET_JWT_SEED=xxx
+PORT=
+DB_CNN=
+SECRET_JWT_SEED=
+NODE_ENV=
+SENDGRID_API_KEY=
 
 ```

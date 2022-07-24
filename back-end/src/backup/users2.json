@@ -5,10 +5,10 @@
   "firstName": "Panda",
   "lastName": "Cat",
   "email": "pandacat2199@gmail.com",
-  "password": "$2a$10$4/XcJklfTUqO7zql8Zt2bOU5Kisj0Hq3mU7dIb6Y29RiqH3FccKce",
+  "password": "$2a$10$UFJdsOgWq76wro/RLjk7I.CA85wV5iCGonwdaMMSBBZ81FkZ3asHm",
   "birthDate": {
     "$date": {
-      "$numberLong": "2000000"
+      "$numberLong": "929923200000"
     }
   },
   "gender": "M",
@@ -27,5 +27,20 @@
     }
   },
   "gender": "F",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62d7a0cf746b2ff33c153135"
+  },
+  "firstName": "Jose",
+  "lastName": "Cristo",
+  "email": "jose@cristo.com",
+  "password": "$2a$10$s.j3D7w63PXy/uFjaYh02ugEjpjnddzUce0h4NHheVOzlvJKvRPXi",
+  "birthDate": {
+    "$date": {
+      "$numberLong": "1657670400000"
+    }
+  },
+  "gender": "M",
   "__v": 0
 }]

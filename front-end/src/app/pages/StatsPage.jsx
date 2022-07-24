@@ -4,7 +4,7 @@ import { useStatsStore } from "../../hooks/useStatsStore";
 import { Button } from "flowbite-react/lib/cjs/index.js";
 import ReactECharts from 'echarts-for-react';
 
-export const HomePage = () => {
+export const StatsPage = () => {
 
     const {user} = useAuthStore();
     const {stats, statsX, statsY, albumCount, photoCount, startLoadingStats } = useStatsStore();
@@ -178,22 +178,25 @@ export const HomePage = () => {
 
   return (
     <div className="App mb-5">
-        <div className="px-6 py-2.5 text-3xl text-center font-bold text-slate-900 mt-4">
+        <div className="px-6 py-2.5 text-3xl text-center font-bold text-slate-900 mt-4 border-2 rounded-lg mb-4">
           Welcome, {user.firstName} {user.lastName} 
         </div>
         {
           (statsX[0]) ? (
             <>
+              <div className="border-2 rounded-lg mb-4">
               <h1 className="px-6 py-0 text-xl text-center font-bold text-slate-900 my-1">Here are your stats:</h1>
-              <h2 className="px-6 py-0 text-lg text-center font-bold text-slate-900 ">Number of albums: {albumCount}</h2>
-              <h2 className="px-6 py-0 text-lg text-center font-bold text-slate-900 mb-4">Number of Photos: {photoCount}</h2>
-              <div className="flex flex-wrap gap-2">
-                <ReactECharts option={options4} style={{height: "50vh", width: "100%"}} className=""/>
-                <ReactECharts option={options5} style={{height: "50vh", width: "100%"}} className=""/>
+                <h2 className="px-6 py-0 text-lg text-center font-bold text-slate-900 ">Number of albums: {albumCount}</h2>
+                <h2 className="px-6 py-0 text-lg text-center font-bold text-slate-900 mb-4">Number of Photos: {photoCount}</h2>
               </div>
-              <ReactECharts option={options} style={{height: "50vh", width: "100%"}} className="mb-10"/>
-              <ReactECharts option={options2} style={{height: "50vh", width: "100%"}} className="mb-10"/>
-              <ReactECharts option={options3} style={{height: "50vh", width: "100%"}} className="mb-10"/>
+                
+              <div className="flex flex-wrap gap-2">
+                <ReactECharts option={options4} style={{height: "50vh", width: "100%"}} className="border-2 rounded-lg mb-2"/>
+                <ReactECharts option={options5} style={{height: "50vh", width: "100%"}} className="border-2 rounded-lg mb-4"/>
+              </div>
+              <ReactECharts option={options} style={{height: "50vh", width: "100%"}} className="border-2 rounded-lg mb-4"/>
+              <ReactECharts option={options2} style={{height: "50vh", width: "100%"}} className="border-2 rounded-lg mb-4"/>
+              <ReactECharts option={options3} style={{height: "50vh", width: "100%"}} className="border-2 rounded-lg mb-4"/>
             </>
           ) : (
             <h1 className="px-6 py-2.5 text-xl text-center font-bold text-slate-900 m-4">You have no stats yet</h1>

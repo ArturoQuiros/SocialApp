@@ -6,7 +6,7 @@ Designed and developed by @arturoquiros and @josealirivasgomez
 
 ⬇⬇⬇ Checkout our project  ⬇⬇⬇
 
-https://social-app-utn.netlify.app/albums
+https://mern-photos-app.herokuapp.com/
 
 ¿How to run?
 

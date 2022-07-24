@@ -29,31 +29,39 @@ router.post(
     ], 
     usersController.login);
 
+router.post(
+    '/forgotpassword', 
+    [
+        check('email', 'Email is required').isEmail(),
+        validarCampos
+    ], 
+    usersController.forgotPassword);
+
 router.get('/renew', validarJWT, usersController.revalidateToken);
 
 router.use(validarJWT); //Se aplica este middleware a las siguientes 5 rutas porque esta antes de las 5
 
 router.get('/logout', usersController.logout);
 
-router.get("/checkpassword/:id", 
+router.post("/checkpassword/:id", 
     [
-        check('password', 'Password must be at least 8 characters long').isLength({min: 8}),
+        check('oldPassword', 'Old Password must be at least 8 characters long').isLength({min: 8}),
         validarCampos
     ], usersController.checkPassword);
-router.get("/checkpassword/", 
+router.post("/checkpassword/", 
     [
-        check('password', 'Password must be at least 8 characters long').isLength({min: 8}),
+        check('oldPassword', 'Old Password must be at least 8 characters long').isLength({min: 8}),
         validarCampos
     ], usersController.checkPassword2);
 
 router.put("/password/:id", 
     [
-        check('password', 'Password must be at least 8 characters long').isLength({min: 8}),
+        check('newPassword', 'New Password must be at least 8 characters long').isLength({min: 8}),
         validarCampos
     ], usersController.updatePassword);
 router.put("/password/", 
     [
-        check('password', 'Password must be at least 8 characters long').isLength({min: 8}),
+        check('newPassword', 'New Password must be at least 8 characters long').isLength({min: 8}),
         validarCampos
     ], usersController.updatePassword2);
 router.put("/:id", 

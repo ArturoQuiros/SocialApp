@@ -135,7 +135,7 @@ export const PhotosPage = () => {
       
 
       {photos[0] ? (
-        <section className="overflow-hidden text-gray-700 ">
+        <section className="overflow-hidden text-gray-700 border-2 rounded-lg mt-4">
           <h1 className="px-0 py-2.5 text-3xl text-center font-bold text-slate-900">
             {AlbumTitle}
           </h1>

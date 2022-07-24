@@ -8,9 +8,9 @@
 2. Make the necessary changes to the environment variables
 
 ```
-VITE_API_URL=xxx
-VITE_CLOUD_NAME=xxx
-VITE_API_KEY=xxx
-VITE_UPLOAD_PRESET=xxx
+VITE_API_URL=
+VITE_CLOUD_NAME=
+VITE_API_KEY=
+VITE_UPLOAD_PRESET=
 
 ```

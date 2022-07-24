@@ -53,7 +53,7 @@ export const AlbumTable = (props) => {
 
   return (
     <>
-      <Table hoverable={true}>
+      <Table hoverable={true} className="border-2 rounded-lg">
         <Table.Head> 
           <Table.HeadCell>Name</Table.HeadCell>
           <Table.HeadCell>Description</Table.HeadCell>
