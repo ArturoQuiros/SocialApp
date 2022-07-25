@@ -101,7 +101,7 @@ export function PhotoModal() {
         isOpen={isModalOpen}
         onRequestClose={closeModal}
         style={customStyles}
-        className={"modal " + (activePhoto?.name ? '' : 'w-2/4')}
+        className={"modal " + (activePhoto?.name ? '' : 'w-11/12 sm:w-11/12 md:w-3/4 lg:w-4/6 xl:w-1/2 2xl:w-1/3')}
         overlayClassName="modal-fondo"
         closeTimeoutMS={200}
     >
