@@ -25,7 +25,7 @@ const addUser = async (req, res = response, next) => { //add a user
         if (usuario){
             return res.status(400).json({
                 ok: false,
-                msg: 'Email already registered',
+                message: 'Email already registered',
             });
         }
 
@@ -60,7 +60,7 @@ const addUser = async (req, res = response, next) => { //add a user
         console.log(error);
         res.status(500).json({
             ok: false,
-            msg: 'Please talk to the admin',
+            message: 'Please talk to the admin',
         });
     }
 
@@ -77,7 +77,7 @@ const login = async (req, res = response, next) => {//login
         if (!usuario){
             return res.status(400).json({
                 ok: false,
-                msg: 'Invalid credentials',
+                message: 'Invalid credentials',
             });
         }
 
@@ -86,7 +86,7 @@ const login = async (req, res = response, next) => {//login
         if (!validPassword) {
             return res.status(400).json({
                 ok: false,
-                msg: 'Invalid credentials',
+                message: 'Invalid credentials',
             });
         }
 
@@ -114,7 +114,7 @@ const login = async (req, res = response, next) => {//login
         console.log(error);
         res.status(500).json({
             ok: false,
-            msg: 'Please talk to the admin',
+            message: 'Please talk to the admin',
         });
     }
 
@@ -131,7 +131,7 @@ const forgotPassword = async (req, res = response, next) => {//forgot password
         if (!usuario){
             return res.status(400).json({
                 ok: false,
-                msg: 'Invalid credentials',
+                message: 'Invalid email',
             });
         }
 
@@ -170,7 +170,7 @@ const forgotPassword = async (req, res = response, next) => {//forgot password
             console.log(err);
             return res.status(500).json({
                 ok: false,
-                msg: 'Error while sending new password',
+                message: 'Error while sending new password',
             });
         })
 
@@ -178,7 +178,7 @@ const forgotPassword = async (req, res = response, next) => {//forgot password
         console.log(error);
         res.status(500).json({
             ok: false,
-            msg: 'Please talk to the admin',
+            message: 'Please talk to the admin',
         });
     }
 
@@ -244,7 +244,7 @@ const checkAPassword = async (req, res = response, next, idParam) => {//Check pa
         if (!usuario){
             return res.status(400).json({
                 ok: false,
-                msg: 'Invalid user ID',
+                message: 'Invalid user ID',
             });
         }
 
@@ -253,7 +253,7 @@ const checkAPassword = async (req, res = response, next, idParam) => {//Check pa
         if (!validPassword) {
             return res.status(400).json({
                 ok: false,
-                msg: 'Invalid password',
+                message: 'Old password is invalid',
             });
         }
 
@@ -267,7 +267,7 @@ const checkAPassword = async (req, res = response, next, idParam) => {//Check pa
         console.log(error);
         res.status(500).json({
             ok: false,
-            msg: 'Please talk to the admin',
+            message: 'Please talk to the admin',
         });
     }
 

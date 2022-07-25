@@ -33,7 +33,7 @@ export const useAlbumStore = () => {
             
         } catch (error) {
             //console.log(error);
-            Swal.fire('Error while saving album', error.response, 'error');
+            Swal.fire('Error while saving album', error.response.data?.message, 'error');
         }
         
     }
@@ -58,7 +58,7 @@ export const useAlbumStore = () => {
 
         } catch (error) {
             //console.log(error);
-            Swal.fire('Error while deleting album', error.response, 'error');
+            Swal.fire('Error while deleting album', error.response.data?.message, 'error');
         }
         
     }

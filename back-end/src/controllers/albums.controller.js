@@ -191,7 +191,7 @@ const updateAnAlbum = async (req, res = response, next, idParam) => {
         if(alb.userId.toString() !== uid){
             return res.status(401).json({
                 ok: false,
-                msg: "You don't have permission to modify this album",
+                message: "You don't have permission to modify this album",
             });
         }
 
@@ -244,7 +244,7 @@ const deleteAnAlbum = async (req, res = response, next, idParam) => {
         if(alb.userId.toString() !== uid){
             return res.status(401).json({
                 ok: false,
-                msg: "You don't have permission to delete this album",
+                message: "You don't have permission to delete this album",
             });
         }
 

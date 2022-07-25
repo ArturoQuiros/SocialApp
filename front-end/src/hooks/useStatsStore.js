@@ -49,6 +49,7 @@ export const useStatsStore = () => {
 
         } catch (error) {
             //console.log(error);
+            Swal.fire('Error while loading stats', error.response.data?.message, 'error');
         }
 
     }
