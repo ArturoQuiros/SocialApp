@@ -52,7 +52,7 @@ export const usePhotoStore = () => {
             
         } catch (error) {
             //console.log(error);
-            Swal.fire('Error while saving photo', error.response, 'error');
+            Swal.fire('Error while saving photo', error.response.data?.message, 'error');
         }
         
     }
@@ -110,7 +110,7 @@ export const usePhotoStore = () => {
             
         } catch (error) {
             //console.log(error);
-            Swal.fire('Error while saving photo', error.response, 'error');
+            Swal.fire('Error while saving photo', error.response.data?.message, 'error');
         }
         
     }
@@ -134,7 +134,7 @@ export const usePhotoStore = () => {
             
         } catch (error) {
             //console.log(error);
-            Swal.fire('Error while deleting photo', error, 'error');
+            Swal.fire('Error while deleting photo', error.response.data?.message, 'error');
         }
         
     }
@@ -194,8 +194,8 @@ export const usePhotoStore = () => {
             Swal.fire('Photos deleted!', 'The photos were deleted successfully!', 'success');
             
         } catch (error) {
-            console.log(error);
-            Swal.fire('Error while deleting photos', error, 'error');
+            //console.log(error);
+            Swal.fire('Error while deleting photos', error.response.data?.message, 'error');
         }
         
     }

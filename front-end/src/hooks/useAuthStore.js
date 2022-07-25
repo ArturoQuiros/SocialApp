@@ -55,7 +55,7 @@ export const useAuthStore = () => {
 
         } catch (error) {
             //console.log(error);
-            dispatch(onLogout(error.response.data?.msg || 'Error'));
+            dispatch(onLogout(error.response.data?.message || 'Error'));
             setTimeout(() => {
                 dispatch(clearErrorMessage());
             }, 10);
@@ -90,7 +90,8 @@ export const useAuthStore = () => {
             const {data} = await mainApi.get('/users/logout');
             
         } catch (error) { 
-            
+            //console.log(error);
+            Swal.fire('Error while logging out', error.response.data?.message, 'error');
         }
         dispatch(onLogoutAlbums());
         dispatch(onLogoutPhotos());
@@ -109,7 +110,7 @@ export const useAuthStore = () => {
             
         } catch (error) {
             //console.log(error);
-            Swal.fire('Error while updating user', error.response, 'error');
+            Swal.fire('Error while updating user', error.response.data?.message, 'error');
         }
         
     }
@@ -122,7 +123,7 @@ export const useAuthStore = () => {
                 await mainApi.post(`/users/checkpassword/${user.uid}`, {oldPassword});
             } catch (error) {
                 //console.log(error);
-                Swal.fire('Error while updating user password', 'Old password is invalid', 'error');
+                Swal.fire('Error while updating user password', error.response.data?.message, 'error');
                 return false;
             }
  
@@ -132,7 +133,7 @@ export const useAuthStore = () => {
             
         } catch (error) {
             //console.log(error);
-            Swal.fire('Error while updating user password', error.response, 'error');
+            Swal.fire('Error while updating user password', error.response.data?.message, 'error');
             return false;
         }
         
@@ -147,7 +148,7 @@ export const useAuthStore = () => {
 
         } catch (error) {
             //console.log(error);
-            Swal.fire('Error while sending new user password', error.response, 'error');
+            Swal.fire('Error while sending new user password', error.response.data?.message, 'error');
         }
     }
 
