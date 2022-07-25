@@ -68,7 +68,7 @@ export const AlbumTable = (props) => {
         <Table.Body className="divide-y">
           {props.albums.map((album) => (
             <Table.Row key={album.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-              <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+              <Table.Cell className="text-gray-900 dark:text-white ">
                 {album.name}
               </Table.Cell>
               <Table.Cell> {album.description}</Table.Cell>

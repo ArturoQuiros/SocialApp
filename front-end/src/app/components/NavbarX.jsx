@@ -8,7 +8,7 @@ export const NavbarX = () => {
   const {startLogout, user} = useAuthStore();
 
   let profileDropdown = (
-    <div className="flex md:order-2">
+    <div className="flex md:order-2 z-40">
       <Dropdown
         arrowIcon={false}
         inline={true}
