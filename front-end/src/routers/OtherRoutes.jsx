@@ -10,6 +10,7 @@ import { SettingsPage } from "../app/pages/SettingsPage";
 export const OtherRoutes = () => {
   return (
     <>
+    
     <div className="content">
       <NavbarX />
         <div className="">
