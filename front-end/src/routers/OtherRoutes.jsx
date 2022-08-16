@@ -12,7 +12,7 @@ export const OtherRoutes = () => {
     <>
     <div className="content">
       <NavbarX />
-        <div className="container">
+        <div className="">
           <Routes>
 
               <Route path="albums" element={<AlbumsPage />} />
