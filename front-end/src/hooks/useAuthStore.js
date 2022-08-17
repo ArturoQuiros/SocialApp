@@ -21,6 +21,8 @@ export const useAuthStore = () => {
             // localStorage.setItem('token', data.token);
             // localStorage.setItem('token-init-date', new Date().getTime());
 
+            console.log(data);
+
             dispatch(onLogin({firstName: data.firstName, 
                             lastName: data.lastName, 
                             email: data.email, 
@@ -68,6 +70,7 @@ export const useAuthStore = () => {
 
             const {data} = await mainApi.get('/users/renew');
             //console.log("renewed");
+            console.log(data);
             
             // localStorage.setItem('token', data.token);
             // localStorage.setItem('token-init-date', new Date().getTime());
@@ -105,6 +108,7 @@ export const useAuthStore = () => {
 
             await mainApi.put(`/users/${user.uid}`, newUser);
             dispatch(onUpdateUser({...newUser, uid: user.uid}));
+            //console.log(newUser);
             Swal.fire('User updated!', 'The user was updated successfully!', 'success');
             return;
             
