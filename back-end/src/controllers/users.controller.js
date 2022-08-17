@@ -188,7 +188,11 @@ const revalidateToken = async (req, res = response) => {
 
     const {uid, firstName, lastName, email, birthDate, gender} = req;
 
-    const token = await generarJWT(uid, firstName, lastName, email, birthDate, gender);
+    const usuario = await User.findOne({email});
+
+    const token = await generarJWT(usuario.id, usuario.firstName, usuario.lastName, usuario.email, usuario.birthDate, usuario.gender);
+
+    //const token = await generarJWT(uid, firstName, lastName, email, birthDate, gender);
 
     return res
         .cookie("token", token, {
@@ -200,12 +204,12 @@ const revalidateToken = async (req, res = response) => {
         .status(200)
         .json({
             ok: true,
-            uid,
-            firstName,
-            lastName, 
-            email, 
-            birthDate, 
-            gender
+            uid: usuario.id,
+            firstName: usuario.firstName,
+            lastName: usuario.lastName,
+            email: usuario.email,
+            birthDate: usuario.birthDate,
+            gender: usuario.gender
         });
 
 }
